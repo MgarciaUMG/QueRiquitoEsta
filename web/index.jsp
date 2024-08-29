@@ -12,7 +12,7 @@
         <div class="container mt-4 col-lg-4">
             <div class="card col-sm-10">
                 <div class="card-body">
-                    <form class="form-sing" action="Validar" method="POST">
+                    <form class="form-sign" action="Validar" method="POST">
                         <div class="form-group text-center">
                             <h3>Login</h3>
                             <img src="imagenes/logo1.png" alt="100" width="200"/>
