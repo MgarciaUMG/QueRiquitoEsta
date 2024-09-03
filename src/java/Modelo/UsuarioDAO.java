@@ -24,6 +24,10 @@ public class UsuarioDAO {
             while (rs.next()) {
                 us.setLogin(rs.getString("login"));
                 us.setPassword(rs.getString("password"));
+                us.setPrimer_nombre(rs.getString("primer_nombre"));
+                us.setPrimer_apellido(rs.getString("primer_apellido"));
+                us.setRol(rs.getString("rol"));
+                
             }
         } catch (Exception e) {
 
