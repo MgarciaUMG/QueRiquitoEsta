@@ -6,7 +6,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <title>JSP Page</title>
+        <title>Que Riquito Está</title>
     </head>
     <body>
         <div class="container mt-4 col-lg-4">
@@ -21,14 +21,25 @@
                         </div>
                         <div class="form-group">
                             <label>Usuario</label>
-                            <input type="text" name="txtuser" class="form-control">
+                            <input type="text" name="txtuser" class="form-control" placeholder="Ingrese su usuario" required="">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" name="txtpass" class="form-control">
+                            <input type="password" name="txtpass" class="form-control" placeholder="Ingrese su contraseña" required="">
                         </div>
                         <input type="submit" name="accion" value="Ingresar" class="btn btn-primary btn-block">
                     </form>
+                    <!-- Mostrar mensaje de error si existe -->
+                    <%
+                        String errorMessage = (String) request.getAttribute("errorMessage");
+                        if (errorMessage != null) {
+                    %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= errorMessage%>
+                    </div>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Validar extends HttpServlet {
 
@@ -43,6 +44,7 @@ public class Validar extends HttpServlet {
                 request.getRequestDispatcher("Controlador?accion=Principal").forward(request, response);
 
             } else {
+                request.setAttribute("errorMessage", "Usuario o contraseña incorrectos.");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
 
