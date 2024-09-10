@@ -41,7 +41,7 @@ public class Validar extends HttpServlet {
             us = udao.validar(login, password);
             if (us.getLogin() != null) {
                 request.setAttribute("usuario", us);
-                request.getRequestDispatcher("Controlador?accion=Principal").forward(request, response);
+                request.getRequestDispatcher("Controlador?menu=Principal").forward(request, response);
 
             } else {
                 request.setAttribute("errorMessage", "Usuario o contraseña incorrectos.");
