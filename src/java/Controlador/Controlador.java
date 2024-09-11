@@ -15,26 +15,32 @@ public class Controlador extends HttpServlet {
 
     Usuario us = new Usuario();
     UsuarioDAO udao = new UsuarioDAO();
+    int idfila;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String menu = request.getParameter("menu");
         String accion = request.getParameter("accion");
+
+        if (menu.equals("Inicio")) {
+            request.getRequestDispatcher("Inicio.jsp").forward(request, response);
+
+        }
         
         if (menu.equals("Principal")) {
             request.getRequestDispatcher("Principal.jsp").forward(request, response);
 
         }
-        
+
         if (menu.equals("BandejaAnalista")) {
             switch (accion) {
-                
-                 case "listar":
-                     List lista = udao.listar();
-                     request.setAttribute("usuarios", lista);
+
+                case "listar":
+                    List lista = udao.listar();
+                    request.setAttribute("usuarios", lista);
 
                     break;
-                
+
                 case "Agregar":
                     String login = request.getParameter("txtlogin");
                     String nit_persona = request.getParameter("txtnit");
@@ -45,6 +51,7 @@ public class Controlador extends HttpServlet {
                     String puesto = request.getParameter("txtpuesto");
                     String rol = request.getParameter("txtrol");
                     String password = request.getParameter("txtpassword");
+                    String estado = request.getParameter("txtestado");
                     us.setLogin(login);
                     us.setNit_persona(nit_persona);
                     us.setPrimer_nombre(primer_nombre);
@@ -54,15 +61,45 @@ public class Controlador extends HttpServlet {
                     us.setPuesto(puesto);
                     us.setRol(rol);
                     us.setPassword(password);
+                    us.setEstado(estado);
                     udao.Agregar(us);
                     request.getRequestDispatcher("Controlador?menu=BandejaAnalista&accion=listar").forward(request, response);
                     break;
                 case "edit":
-                    
-
+                    idfila = Integer.parseInt(request.getParameter("nit_persona"));
+                    Usuario u = udao.listarId(idfila);
+                    request.setAttribute("usuario", u);
+                    request.setAttribute("editMode", true);
+                    request.getRequestDispatcher("Controlador?menu=BandejaAnalista&accion=listar").forward(request, response);
+                    break;
+                case "Actualizar":
+                    String login1 = request.getParameter("txtlogin");
+                    String nit_persona1 = request.getParameter("txtnit");
+                    String primer_nombre1 = request.getParameter("txtpnombre");
+                    String segundo_nombre1 = request.getParameter("txtsnombre");
+                    String primer_apellido1 = request.getParameter("txtpapellido");
+                    String segundo_apellido1 = request.getParameter("txtsapellido");
+                    String puesto1 = request.getParameter("txtpuesto");
+                    String rol1 = request.getParameter("txtrol");
+                    String password1 = request.getParameter("txtpassword");
+                    String estado1 = request.getParameter("txtestado");
+                    us.setLogin(login1);
+                    us.setNit_persona(String.valueOf(idfila));
+                    us.setPrimer_nombre(primer_nombre1);
+                    us.setSegundo_nombre(segundo_nombre1);
+                    us.setPrimer_apellido(primer_apellido1);
+                    us.setSegundo_apellido(segundo_apellido1);
+                    us.setPuesto(puesto1);
+                    us.setRol(rol1);
+                    us.setPassword(password1);
+                    us.setEstado(estado1);
+                    udao.edit(us);
+                    request.getRequestDispatcher("Controlador?menu=BandejaAnalista&accion=listar").forward(request, response);
                     break;
                 case "eliminar":
-
+                    idfila = Integer.parseInt(request.getParameter("nit_persona"));
+                    udao.eliminar(idfila);
+                    request.getRequestDispatcher("Controlador?menu=BandejaAnalista&accion=listar").forward(request, response);
                     break;
 
                 default:
@@ -72,7 +109,6 @@ public class Controlador extends HttpServlet {
             request.getRequestDispatcher("BandejaAnalista.jsp").forward(request, response);
 
         }
-        
 
     }
 

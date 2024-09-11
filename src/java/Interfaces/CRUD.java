@@ -7,7 +7,7 @@ public interface CRUD {
 
     public List listar();
 
-    public Usuario list(int nit_persona);
+    public Usuario listarID(int nit_persona);
 
     public boolean Agregar(Usuario us);
 

@@ -13,7 +13,7 @@
                 <div class="d-flex w-100"> 
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="#">Inicio</a>
+                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Inicio" target="myFrame">Inicio</a>
                         </li>
                         <li class="nav-item">
                             <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=BandejaAnalista&accion=listar" target="myFrame">Producto</a>
@@ -48,7 +48,10 @@
         </nav>
 
         <div class="m-4" style="height: 870px;">
-            <iframe name="myFrame" style="height: 100%; width: 100%; border: none"></iframe>
+
+            <iframe name="myFrame" style="height: 100%; width: 100%; border: none" 
+                    srcdoc='<img src="imagenes/logo1.png" alt="Imagen por defecto" style="max-width: 100%; max-height: 100%; display: block; margin: auto;">'>
+            </iframe>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
