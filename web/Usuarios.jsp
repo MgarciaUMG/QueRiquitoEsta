@@ -15,7 +15,7 @@
         <div class="d-flex">
             <div class="card col-sm-4">
                 <div class="card-body">
-                    <form action="Controlador?menu=BandejaAnalista" method="POST">
+                    <form action="Controlador?menu=Usuarios" method="POST">
                         <div class="form-group">
                             <label>Nit</label>
                             <input type="text" value="${usuario.getNit_persona()}" name="txtnit" class="form-control">
@@ -40,9 +40,23 @@
                             <label>Puesto</label>
                             <input type="text" value="${usuario.getPuesto()}" name="txtpuesto" class="form-control">
                         </div>
+                        <!-- <div class="form-group">
+                             <label>Rol</label>
+                             <input type="text" value="${usuario.getRol()}" name="txtrol" class="form-control">
+                         </div>-->
                         <div class="form-group">
                             <label>Rol</label>
-                            <input type="text" value="${usuario.getRol()}" name="txtrol" class="form-control">
+                            <select class="form-control" name="txtrol" id="opciones">
+                                <option value="RegistroMuestras">Registro Muestras</option>
+                                <option value="AnalistadeLaboratorio">Analista de Laboratorio</option>
+                                <option value="AlmacenamientodeMuestra">Almacenamiento de Muestra</option>
+                                <option value="SupervisorLaboratorio">Supervisor de Laboratorio</option>
+                                <option value="JefeUnidadLaboratorio">Jefe Unidad Laboratorio</option>
+                                <option value="LaboratorioExterno">Laboratorio Externo</option>
+                                <option value="Reportes">Reportes</option>
+                                <option value="VisualizacionDocumentos">Visualización de Documentos</option>
+                                <option value="Administrador">Administrador</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
@@ -50,7 +64,10 @@
                         </div>
                         <div class="form-group">
                             <label>Estado</label>
-                            <input type="text" value="${usuario.getEstado()}" name="txtestado" class="form-control">
+                            <select class="form-control" name="txtestado" id="opciones">
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
                         </div>
 
                         <input type="submit" name="accion" value="Agregar" class="btn btn-info">
@@ -96,8 +113,8 @@
 
                                 <td>${us.getEstado()}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-info" href="Controlador?menu=BandejaAnalista&accion=edit&nit_persona=${us.getNit_persona()}" onclick="habilitarActualizar()">Editar</a>
-                                    <a class="btn btn-danger" href="Controlador?menu=BandejaAnalista&accion=eliminar&nit_persona=${us.getNit_persona()}">Remove</a>
+                                    <a class="btn btn-info" href="Controlador?menu=Usuarios&accion=edit&nit_persona=${us.getNit_persona()}" onclick="habilitarActualizar()">Editar</a>
+                                    <a class="btn btn-danger" href="Controlador?menu=Usuarios&accion=eliminar&nit_persona=${us.getNit_persona()}">Remove</a>
                                 </td>
                             </tr>
                         </c:forEach>

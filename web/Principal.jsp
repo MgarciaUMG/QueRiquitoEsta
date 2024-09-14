@@ -16,13 +16,23 @@
                             <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Inicio" target="myFrame">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=BandejaAnalista&accion=listar" target="myFrame">Producto</a>
+                            <div class="ml-auto">
+                                <div class="dropdown">
+                                    <button style="margin-left: 10px; border: none;" class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Servicios
+                                    </button>
+                                    <div class="dropdown-menu text-center">
+                                        <a class="dropdown-item" href="#">Bandeja Analista</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Bandeja Almacenamiento</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="Controlador?menu=BandejaLab" target="myFrame">Bandeja Laboratorio</a>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="#">Reportes</a>
-                        </li>
-                        <li class="nav-item">
-                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="#">SCM</a>
+                            <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Usuarios&accion=listar" target="myFrame">Administración</a>
                         </li>
                     </ul>
                     <div class="ml-auto">

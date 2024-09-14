@@ -5,27 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <title>JSP Page</title>
-        <!--<style>
-            html, body {
-                height: 100%;
-                margin: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            img {
-                max-width: 100%;
-                height: auto;
-            }
-        </style>-->
+        <title>Que Riquito Está</title>
     </head>
     <body>
-        <!-- <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-            <img src="imagenes/logo1.png" alt="Logo" class="img-fluid"/>
-        </div>-->
-        
-         <div class="m-4" style="height: 800px;">
+        <div class="m-4" style="height: 800px;">
 
             <iframe name="myFrame" style="height: 100%; width: 100%; border: none" 
                     srcdoc='<img src="imagenes/logo1.png" alt="Imagen por defecto" style="max-width: 100%; max-height: 100%; display: block; margin: auto;">'>
