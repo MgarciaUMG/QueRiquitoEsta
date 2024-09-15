@@ -47,26 +47,25 @@ public class MuestraDAO {
     }
 
     public boolean Agregarm(Muestra mu) {
-        String sql = "insert into registro_solicitudmuestra(id_Solicitud, tipo_Solicitud, tipo_Entidad, fecha_Solicitud, tipo_Documento, numero_Documento, nit_Proveedor, nombre_Proveedor, correo_proveedor, correo_Solicitante, direccion_Proveedor, telefono_Proveedor, nit_Solicitante, nombre_Solicitante, no_Muestra, descripcion_Producto)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into registro_solicitudmuestra(tipo_Solicitud, tipo_Entidad, fecha_Solicitud, tipo_Documento, numero_Documento, nit_Proveedor, nombre_Proveedor, correo_proveedor, correo_Solicitante, direccion_Proveedor, telefono_Proveedor, nit_Solicitante, nombre_Solicitante, no_Muestra, descripcion_Producto)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, mu.getIdSolicitud());
-            ps.setString(2, mu.getTipoSolicitud());
-            ps.setString(3, mu.getTipoEntidad());
-            ps.setDate(4, mu.getFechaSolicitud());
-            ps.setString(5, mu.getTipoDocumento());
-            ps.setString(6, mu.getNumeroDocumento());
-            ps.setString(7, mu.getNitProveedor());
-            ps.setString(8, mu.getNombreProveedor());
-            ps.setString(9, mu.getCorreoproveedor());
-            ps.setString(10, mu.getCorreoSolicitante());
-            ps.setString(11, mu.getDireccionProveedor());
-            ps.setString(12, mu.getTelefonoProveedor());
-            ps.setString(13, mu.getNitSolicitante());
-            ps.setString(14, mu.getNombreSolicitante());
-            ps.setString(15, mu.getNoMuestra());
-            ps.setString(16, mu.getDescripcionProducto());
+            ps.setString(1, mu.getTipoSolicitud());
+            ps.setString(2, mu.getTipoEntidad());
+            ps.setDate(3, mu.getFechaSolicitud());
+            ps.setString(4, mu.getTipoDocumento());
+            ps.setString(5, mu.getNumeroDocumento());
+            ps.setString(6, mu.getNitProveedor());
+            ps.setString(7, mu.getNombreProveedor());
+            ps.setString(8, mu.getCorreoproveedor());
+            ps.setString(9, mu.getCorreoSolicitante());
+            ps.setString(10, mu.getDireccionProveedor());
+            ps.setString(11, mu.getTelefonoProveedor());
+            ps.setString(12, mu.getNitSolicitante());
+            ps.setString(13, mu.getNombreSolicitante());
+            ps.setString(14, mu.getNoMuestra());
+            ps.setString(15, mu.getDescripcionProducto());
             ps.executeUpdate();
         } catch (Exception e) {
         }

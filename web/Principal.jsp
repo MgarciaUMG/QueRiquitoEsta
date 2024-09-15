@@ -26,7 +26,7 @@
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Bandeja Almacenamiento</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="Controlador?menu=BandejaLab" target="myFrame">Bandeja Laboratorio</a>
+                                        <a class="dropdown-item" href="Controlador?menu=BandejaLab&accion=listar" target="myFrame">Bandeja Laboratorio</a>
                                     </div>
                                 </div>
                             </div>

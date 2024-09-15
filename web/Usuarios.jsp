@@ -47,15 +47,15 @@
                         <div class="form-group">
                             <label>Rol</label>
                             <select class="form-control" name="txtrol" id="opciones">
-                                <option value="RegistroMuestras">Registro Muestras</option>
-                                <option value="AnalistadeLaboratorio">Analista de Laboratorio</option>
-                                <option value="AlmacenamientodeMuestra">Almacenamiento de Muestra</option>
-                                <option value="SupervisorLaboratorio">Supervisor de Laboratorio</option>
-                                <option value="JefeUnidadLaboratorio">Jefe Unidad Laboratorio</option>
-                                <option value="LaboratorioExterno">Laboratorio Externo</option>
-                                <option value="Reportes">Reportes</option>
-                                <option value="VisualizacionDocumentos">Visualización de Documentos</option>
-                                <option value="Administrador">Administrador</option>
+                                <option value="RegistroMuestras" ${usuario.getRol().equals("RegistroMuestras") ? "selected" : ""}>Registro Muestras</option>
+                                <option value="AnalistadeLaboratorio" ${usuario.getRol().equals("AnalistadeLaboratorio") ? "selected" : ""}>Analista de Laboratorio</option>
+                                <option value="AlmacenamientodeMuestra" ${usuario.getRol().equals("AlmacenamientodeMuestra") ? "selected" : ""}>Almacenamiento de Muestra</option>
+                                <option value="SupervisorLaboratorio" ${usuario.getRol().equals("SupervisorLaboratorio") ? "selected" : ""}>Supervisor de Laboratorio</option>
+                                <option value="JefeUnidadLaboratorio" ${usuario.getRol().equals("JefeUnidadLaboratorio") ? "selected" : ""}>Jefe Unidad Laboratorio</option>
+                                <option value="LaboratorioExterno" ${usuario.getRol().equals("LaboratorioExterno") ? "selected" : ""}>Laboratorio Externo</option>
+                                <option value="Reportes" ${usuario.getRol().equals("Reportes") ? "selected" : ""}>Reportes</option>
+                                <option value="VisualizacionDocumentos" ${usuario.getRol().equals("VisualizacionDocumentos") ? "selected" : ""}>Visualización de Documentos</option>
+                                <option value="Administrador" ${usuario.getRol().equals("Administrador") ? "selected" : ""}>Administrador</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -65,8 +65,8 @@
                         <div class="form-group">
                             <label>Estado</label>
                             <select class="form-control" name="txtestado" id="opciones">
-                                <option value="Activo">Activo</option>
-                                <option value="Inactivo">Inactivo</option>
+                                <option value="Activo" ${usuario.getEstado().equals("Activo") ? "selected" : ""}>Activo</option>
+                                <option value="Inactivo" ${usuario.getEstado().equals("Inactivo") ? "selected" : ""}>Inactivo</option>
                             </select>
                         </div>
 
