@@ -42,20 +42,20 @@
                         </div>
                         <!-- <div class="form-group">
                              <label>Rol</label>
-                             <input type="text" value="${usuario.getRol()}" name="txtrol" class="form-control">
+                             <input type="text" value="" name="txtrol" class="form-control">
                          </div>-->
                         <div class="form-group">
                             <label>Rol</label>
                             <select class="form-control" name="txtrol" id="opciones">
-                                <option value="RegistroMuestras" ${usuario.getRol().equals("RegistroMuestras") ? "selected" : ""}>Registro Muestras</option>
-                                <option value="AnalistadeLaboratorio" ${usuario.getRol().equals("AnalistadeLaboratorio") ? "selected" : ""}>Analista de Laboratorio</option>
-                                <option value="AlmacenamientodeMuestra" ${usuario.getRol().equals("AlmacenamientodeMuestra") ? "selected" : ""}>Almacenamiento de Muestra</option>
-                                <option value="SupervisorLaboratorio" ${usuario.getRol().equals("SupervisorLaboratorio") ? "selected" : ""}>Supervisor de Laboratorio</option>
-                                <option value="JefeUnidadLaboratorio" ${usuario.getRol().equals("JefeUnidadLaboratorio") ? "selected" : ""}>Jefe Unidad Laboratorio</option>
-                                <option value="LaboratorioExterno" ${usuario.getRol().equals("LaboratorioExterno") ? "selected" : ""}>Laboratorio Externo</option>
-                                <option value="Reportes" ${usuario.getRol().equals("Reportes") ? "selected" : ""}>Reportes</option>
-                                <option value="VisualizacionDocumentos" ${usuario.getRol().equals("VisualizacionDocumentos") ? "selected" : ""}>Visualización de Documentos</option>
-                                <option value="Administrador" ${usuario.getRol().equals("Administrador") ? "selected" : ""}>Administrador</option>
+                                <option value="2" ${usuario.getRol().equals("2") ? "selected" : ""}>Registro Muestras</option>
+                                <option value="3" ${usuario.getRol().equals("3") ? "selected" : ""}>Analista de Laboratorio</option>
+                                <option value="4" ${usuario.getRol().equals("4") ? "selected" : ""}>Almacenamiento de Muestra</option>
+                                <option value="5" ${usuario.getRol().equals("5") ? "selected" : ""}>Supervisor de Laboratorio</option>
+                                <option value="6" ${usuario.getRol().equals("6") ? "selected" : ""}>Jefe Unidad Laboratorio</option>
+                                <option value="7" ${usuario.getRol().equals("7") ? "selected" : ""}>Laboratorio Externo</option>
+                                <option value="8" ${usuario.getRol().equals("8") ? "selected" : ""}>Reportes</option>
+                                <option value="9" ${usuario.getRol().equals("9") ? "selected" : ""}>Visualización de Documentos</option>
+                                <option value="1" ${usuario.getRol().equals("1") ? "selected" : ""}>Administrador</option>
                             </select>
                         </div>
                         <div class="form-group">

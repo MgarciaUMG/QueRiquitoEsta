@@ -23,9 +23,9 @@
                 margin-bottom: 15px;
             }
 
-            #formulario-solicitud {
-                display: none; /* Ocultamos el formulario inicialmente */
-            }
+          /* #formulario-solicitud {
+                display: none; 
+            }*/
 
         </style>
     </head>
@@ -196,7 +196,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-        <script>
+     <!--   <script>
 
             $(document).ready(function () {
                 $('#nuevaSolicitudBtn').click(function () {
@@ -213,6 +213,6 @@
                 $('#formulario-solicitud').slideDown();
             }
 
-        </script>
+        </script>-->
     </body>
 </html>

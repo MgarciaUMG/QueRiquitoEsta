@@ -1,5 +1,7 @@
 package Controlador;
 
+import Modelo.Entidad;
+import Modelo.EntidadDAO;
 import Modelo.Muestra;
 import Modelo.MuestraDAO;
 import Modelo.Usuario;
@@ -133,6 +135,143 @@ public class Controlador extends HttpServlet {
             }
 
             request.getRequestDispatcher("RegistroSolicitudyMuestra.jsp").forward(request, response);
+
+        }
+
+        if (menu.equals("ManteCata")) {
+            EntidadDAO entidadDAO = new EntidadDAO();
+            List<String> tiposEntidades = entidadDAO.obtenerTiposEntidades();
+            switch (accion) {
+
+                case "Buscar":
+                    String nitEntidad = request.getParameter("txtnitenti");
+
+                    String mensaje = entidadDAO.buscarYCopiarRegistro(nitEntidad);
+                    if (mensaje == "Entidad agregada exitosamente.") {
+                        request.setAttribute("mensaje", "Entidad agregada exitosamente.");
+                        request.setAttribute("mensajeTipo", "exito");
+                    } else if (mensaje == "El registro ya existe en las entidades.") {
+                        request.setAttribute("mensaje", "El registro ya existe en las entidades.");
+                        request.setAttribute("mensajeTipo", "error");
+                    } else {
+                        request.setAttribute("mensaje", "La entidad no existe.");
+                        request.setAttribute("mensajeTipo", "error");
+
+                    }
+
+                    request.setAttribute("tiposEntidades", tiposEntidades);
+
+                    break;
+
+                case "ver":
+
+                    request.setAttribute("tiposEntidades", tiposEntidades);
+                    request.getRequestDispatcher("MantenimientoCatalogos.jsp").forward(request, response);
+
+                    break;
+
+                case "Listar Entidades":
+                    request.setAttribute("tiposEntidades", tiposEntidades);
+                    String tipoEntidadSeleccionado = request.getParameter("tipoEntidad");
+                    List<Entidad> entidades = entidadDAO.listarEntidadesPorTipo(tipoEntidadSeleccionado);
+                    request.setAttribute("entidades", entidades);
+                    request.getRequestDispatcher("MantenimientoCatalogos.jsp").forward(request, response);
+                    break;
+
+                /*case "listar":
+                    List lista = mdao.listarm();
+                    request.setAttribute("muestras", lista);
+
+                    break;
+
+                case "Agregar":
+                    String tipoSolicitud = request.getParameter("txttiposoli");
+                    String tipoEntidad = request.getParameter("txttipoenti");
+                    Date fechaSolicitud = Date.valueOf(request.getParameter("txtfechasoli"));
+                    String tipoDocumento = request.getParameter("txttipodocu");
+                    String numeroDocumento = request.getParameter("txtnodocu");
+                    String nitProveedor = request.getParameter("txtnitpro");
+                    String nombreProveedor = request.getParameter("txtnombrepro");
+                    String correoproveedor = request.getParameter("txtcorreopro");
+                    String correoSolicitante = request.getParameter("txtcorreosoli");
+                    String direccionProveedor = request.getParameter("txtdirepro");
+                    String telefonoProveedor = request.getParameter("txttelpro");
+                    String nitSolicitante = request.getParameter("txtnitsoli");
+                    String nombreSolicitante = request.getParameter("txtnombresoli");
+                    String noMuestra = request.getParameter("txtnomuestra");
+                    String descripcionProducto = request.getParameter("txtdesprodu");
+
+                    mu.setTipoSolicitud(tipoSolicitud);
+                    mu.setTipoEntidad(tipoEntidad);
+                    mu.setFechaSolicitud(fechaSolicitud);
+                    mu.setTipoDocumento(tipoDocumento);
+                    mu.setNumeroDocumento(numeroDocumento);
+                    mu.setNitProveedor(nitProveedor);
+                    mu.setNombreProveedor(nombreProveedor);
+                    mu.setCorreoproveedor(correoproveedor);
+                    mu.setCorreoSolicitante(correoSolicitante);
+                    mu.setDireccionProveedor(direccionProveedor);
+                    mu.setTelefonoProveedor(telefonoProveedor);
+                    mu.setNitSolicitante(nitSolicitante);
+                    mu.setNombreSolicitante(nombreSolicitante);
+                    mu.setNoMuestra(noMuestra);
+                    mu.setDescripcionProducto(descripcionProducto);
+                    mdao.Agregarm(mu);
+                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    break;
+                case "edit":
+                    idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
+                    Muestra mus = mdao.listarIdm(idfilam);
+                    request.setAttribute("muestra", mus);
+                    request.setAttribute("editMode", true);
+                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    break;
+                case "Actualizar":
+                    int idSolicitud1 = Integer.parseInt(request.getParameter("txtidsoli"));
+                    String tipoSolicitud1 = request.getParameter("txttiposoli");
+                    String tipoEntidad1 = request.getParameter("txttipoenti");
+                    Date fechaSolicitud1 = Date.valueOf(request.getParameter("txtfechasoli"));
+                    String tipoDocumento1 = request.getParameter("txttipodocu");
+                    String numeroDocumento1 = request.getParameter("txtnodocu");
+                    String nitProveedor1 = request.getParameter("txtnitpro");
+                    String nombreProveedor1 = request.getParameter("txtnombrepro");
+                    String correoproveedor1 = request.getParameter("txtcorreopro");
+                    String correoSolicitante1 = request.getParameter("txtcorreosoli");
+                    String direccionProveedor1 = request.getParameter("txtdirepro");
+                    String telefonoProveedor1 = request.getParameter("txttelpro");
+                    String nitSolicitante1 = request.getParameter("txtnitsoli");
+                    String nombreSolicitante1 = request.getParameter("txtnombresoli");
+                    String noMuestra1 = request.getParameter("txtnomuestra");
+                    String descripcionProducto1 = request.getParameter("txtdesprodu");
+                    mu.setIdSolicitud(idSolicitud1);
+                    mu.setTipoSolicitud(tipoSolicitud1);
+                    mu.setTipoEntidad(tipoEntidad1);
+                    mu.setFechaSolicitud(fechaSolicitud1);
+                    mu.setTipoDocumento(tipoDocumento1);
+                    mu.setNumeroDocumento(numeroDocumento1);
+                    mu.setNitProveedor(nitProveedor1);
+                    mu.setNombreProveedor(nombreProveedor1);
+                    mu.setCorreoproveedor(correoproveedor1);
+                    mu.setCorreoSolicitante(correoSolicitante1);
+                    mu.setDireccionProveedor(direccionProveedor1);
+                    mu.setTelefonoProveedor(telefonoProveedor1);
+                    mu.setNitSolicitante(nitSolicitante1);
+                    mu.setNombreSolicitante(nombreSolicitante1);
+                    mu.setNoMuestra(noMuestra1);
+                    mu.setDescripcionProducto(descripcionProducto1);
+                    mdao.editm(mu);
+                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    break;
+                case "eliminar":
+                    idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
+                    mdao.eliminarm(idfilam);
+                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    break;
+
+                default:
+                    throw new AssertionError();*/
+            }
+            request.getRequestDispatcher("MantenimientoCatalogos.jsp").forward(request, response);
 
         }
 

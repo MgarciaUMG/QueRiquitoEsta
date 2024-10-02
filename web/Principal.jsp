@@ -27,6 +27,8 @@
                                         <a class="dropdown-item" href="#">Bandeja Almacenamiento</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="Controlador?menu=BandejaLab&accion=listar" target="myFrame">Bandeja Laboratorio</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="Controlador?menu=ManteCata&accion=Listar Entidades" target="myFrame">Mantenimiento Catalogos</a>
                                     </div>
                                 </div>
                             </div>
