@@ -93,7 +93,10 @@
                 </div>
 
                 <br>
-                <table class="table table-bordered">
+                <label for="filtro">Filtrar entidades:</label>
+                <input type="text" id="filtro" onkeyup="filtrarTabla()" placeholder="Buscar por nombre o tipo..." class="form-control">
+
+                <table id="tablaEntidades" class="table table-bordered">
                     <thead>
                         <tr>
                             <th class="text-center">Id Entidad</th>
@@ -111,7 +114,7 @@
                                 <td class="text-center">${entidad.nitEntidad}</td>
                                 <td class="text-center">${entidad.tipoEntidad}</td>
                                 <td class="text-center">
-                                    <a class="btn btn-danger" href="Controlador?menu=BandejaLab&accion=eliminar&idSolicitud=${mu.getIdSolicitud()}">Remove</a>
+                                    <a class="btn btn-danger" href="Controlador?menu=ManteCata&accion=eliminar&idEntidad=${entidad.idEntidad}">Remove</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -119,6 +122,33 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            function filtrarTabla() {
+                // Obtener el valor del input de filtro
+                const filtro = document.getElementById("filtro").value.toLowerCase();
+                // Obtener la tabla y las filas
+                const tabla = document.getElementById("tablaEntidades");
+                const filas = tabla.getElementsByTagName("tr");
+
+                // Iterar a través de todas las filas de la tabla
+                for (let i = 1; i < filas.length; i++) { // Comienza en 1 para omitir la fila de encabezado
+                    const celdas = filas[i].getElementsByTagName("td");
+                    let encontrado = false;
+
+                    // Iterar a través de todas las celdas de la fila
+                    for (let j = 0; j < celdas.length; j++) {
+                        if (celdas[j].innerText.toLowerCase().includes(filtro)) {
+                            encontrado = true;
+                            break;
+                        }
+                    }
+
+                    // Mostrar o esconder la fila en función del filtro
+                    filas[i].style.display = encontrado ? "" : "none";
+                }
+            }
+        </script>
 
         <c:if test="${not empty mensaje}">
             <script>

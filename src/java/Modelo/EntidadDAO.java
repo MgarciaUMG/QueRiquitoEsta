@@ -96,4 +96,40 @@ public class EntidadDAO {
         return entidades;
     }
 
+    public void eliminarEntidad(int idEntidad) {
+        String sql = "DELETE FROM entidad_sistema WHERE id_Entidads = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idEntidad);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Entidad buscarPorNit(String nitEntidad) {
+        String sql = "SELECT * FROM entidad_sistema WHERE nit_Entidads = ?";
+        Entidad entidad = null;
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nitEntidad);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                entidad = new Entidad();
+                entidad.setIdEntidad(rs.getInt("id_Entidads"));
+                entidad.setNombreEntidad(rs.getString("nombre_Entidads"));
+                entidad.setNitEntidad(rs.getString("nit_Entidads"));
+                entidad.setTipoEntidad(rs.getString("tipo_Entidads"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entidad; 
+    }
+
 }

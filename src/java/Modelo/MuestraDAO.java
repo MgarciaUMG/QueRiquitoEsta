@@ -42,6 +42,7 @@ public class MuestraDAO {
                 list.add(mu);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
@@ -67,7 +68,9 @@ public class MuestraDAO {
             ps.setString(14, mu.getNoMuestra());
             ps.setString(15, mu.getDescripcionProducto());
             ps.executeUpdate();
+            return true;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -137,6 +140,7 @@ public class MuestraDAO {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return mu;
     }
