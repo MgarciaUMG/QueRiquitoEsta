@@ -10,52 +10,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>Que Riquito Está</title>
-        <style>
-
-            .form-row {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-            }
-
-            .form-group {
-                flex: 0 0 32%; /* Cada div ocupará el 48% del ancho, con espacio entre ellos */
-                margin-bottom: 15px;
-            }
-
-            #busqueda-entidad {
-                display: none; 
-            }
-
-        </style>
-        <script>
-            function mostrarMensaje(mensaje, tipo) {
-                var mensajeDiv = document.getElementById("mensajeDiv");
-                var mensajeTexto = document.getElementById("mensajeTexto");
-
-                mensajeTexto.innerText = mensaje; // Asigna el mensaje al div
-
-                // Cambia el estilo del div según el tipo de mensaje
-                if (tipo === "exito") {
-                    mensajeDiv.style.display = "block"; // Muestra el div
-                    mensajeDiv.style.border = "1px solid green";
-                    mensajeDiv.style.backgroundColor = "#d4edda"; // Verde claro
-                    mensajeDiv.style.color = "#155724"; // Texto verde oscuro
-                } else if (tipo === "error") {
-                    mensajeDiv.style.display = "block"; // Muestra el div
-                    mensajeDiv.style.border = "1px solid red";
-                    mensajeDiv.style.backgroundColor = "#f8d7da"; // Rojo claro
-                    mensajeDiv.style.color = "#721c24"; // Texto rojo oscuro
-                }
-            }
-        </script>
     </head>
     <body>
-
-        <div id="mensajeDiv" style="display:none; padding: 10px; margin-bottom: 15px;">
-            <span id="mensajeTexto"></span>
-        </div>
-
 
         <div>
             <div class="container mt-4">
@@ -75,23 +31,8 @@
                     </div>
                 </form>
 
-                <button class="btn btn-primary" id="agregarEntidadBtn">Agregar Entidad</button>
+                <a href="BusquedaMantenimientoCatalogos.jsp" class="btn btn-primary" id="agregarEntidadBtn">Agregar Entidad</a>
                 <br>
-
-                <div class="container mt-4" id="busqueda-entidad">
-                    <div class="card-body">
-                        <form action="Controlador?menu=ManteCata" method="POST">
-                            <div class="form-group">
-                                <label>Nit Entidad</label>
-                                <input type="text" name="txtnitenti" placeholder="Ingrese Nit Entidad" class="form-control" required="">
-                            </div>
-                            <div class="form-group">
-                                <input type="submit" name="accion" value="Buscar" class="btn btn-primary" id="btnbuscarEnti">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
                 <br>
                 <label for="filtro">Filtrar entidades:</label>
                 <input type="text" id="filtro" onkeyup="filtrarTabla()" placeholder="Buscar por nombre o tipo..." class="form-control">
@@ -149,24 +90,8 @@
                 }
             }
         </script>
-
-        <c:if test="${not empty mensaje}">
-            <script>
-                mostrarMensaje("${mensaje}", "${mensajeTipo}"); // Llama a la función para mostrar el mensaje
-            </script>
-        </c:if>
-
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-        <script>
-
-                $(document).ready(function () {
-                    $('#agregarEntidadBtn').click(function () {
-                        $('#busqueda-entidad').slideToggle();
-                    });
-                });
-        </script>
-
     </body>
 </html>

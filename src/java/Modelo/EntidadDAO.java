@@ -14,36 +14,26 @@ public class EntidadDAO {
     PreparedStatement ps;
     ResultSet rs;
 
-    public String buscarYCopiarRegistro(String nitEntidad) {
+    public String buscarYCopiarRegistro(Entidad en) {
         String sqlBuscars = "SELECT * FROM entidad_sistema WHERE nit_Entidads = ?";
-        String sqlBuscarg = "SELECT * FROM entidad_global WHERE nit_Entidadg = ?";
         String sqlCopiars = "INSERT INTO entidad_sistema (id_Entidads, nombre_Entidads, nit_Entidads, tipo_Entidads) VALUES (?, ?, ?, ?)";
-
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sqlBuscars);
-            ps.setString(1, nitEntidad);
+            ps.setString(1, en.getNitEntidad());
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 return "El registro ya existe en las entidades.";
             } else {
-                ps = con.prepareStatement(sqlBuscarg);
-                ps.setString(1, nitEntidad);
-                rs = ps.executeQuery();
-
-                if (rs.next()) {
-                    ps = con.prepareStatement(sqlCopiars);
-                    ps.setInt(1, rs.getInt("id_Entidadg"));
-                    ps.setString(2, rs.getString("nombre_Entidadg"));
-                    ps.setString(3, rs.getString("nit_Entidadg"));
-                    ps.setString(4, rs.getString("tipo_Entidadg"));
-                    ps.executeUpdate();
-                    return "Entidad agregada exitosamente.";
-                } else {
-                    return "La entidad no existe.";
-
-                }
+                ps = con.prepareStatement(sqlCopiars);
+                ps.setInt(1, en.getIdEntidad());
+                ps.setString(2, en.getNombreEntidad());
+                ps.setString(3, en.getNitEntidad());
+                ps.setString(4, en.getTipoEntidad());
+                ps.executeUpdate();
+                return "Entidad agregada exitosamente.";
+             
             }
 
         } catch (Exception e) {
@@ -125,11 +115,40 @@ public class EntidadDAO {
                 entidad.setNombreEntidad(rs.getString("nombre_Entidads"));
                 entidad.setNitEntidad(rs.getString("nit_Entidads"));
                 entidad.setTipoEntidad(rs.getString("tipo_Entidads"));
+            } else {
+
+                return entidad;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return entidad; 
+        return entidad;
+    }
+
+    public Entidad buscarPorNitN(String nitEntidad) {
+        String sql = "SELECT * FROM entidad_global WHERE nit_Entidadg = ?";
+        Entidad entidad = null;
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nitEntidad);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                entidad = new Entidad();
+                entidad.setIdEntidad(rs.getInt("id_Entidadg"));
+                entidad.setNombreEntidad(rs.getString("nombre_Entidadg"));
+                entidad.setNitEntidad(rs.getString("nit_Entidadg"));
+                entidad.setTipoEntidad(rs.getString("tipo_Entidadg"));
+            } else {
+
+                return entidad;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entidad;
     }
 
 }

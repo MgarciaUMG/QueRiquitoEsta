@@ -12,6 +12,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -49,12 +50,16 @@ public class Controlador extends HttpServlet {
 
                     break;
 
+                case "Nuevo":
+                    request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
+
+                    break;
+
                 case "buscarPro":
                     String nitEntidad = request.getParameter("txtnitpro");
                     Entidad enti = eDAO.buscarPorNit(nitEntidad);
                     request.setAttribute("entidad", enti);
-                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
-                    
+                    request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
 
                     break;
 
@@ -147,7 +152,7 @@ public class Controlador extends HttpServlet {
 
             }
 
-            // request.getRequestDispatcher("RegistroSolicitudyMuestra.jsp").forward(request, response);
+            request.getRequestDispatcher("RegistroSolicitudyMuestra.jsp").forward(request, response);
         }
 
         if (menu.equals("ManteCata")) {
@@ -155,15 +160,23 @@ public class Controlador extends HttpServlet {
             List<String> tiposEntidades = entidadDAO.obtenerTiposEntidades();
             switch (accion) {
 
-                case "Buscar":
+                case "Guardar":
+                    int idEntidad = Integer.parseInt(request.getParameter("txtidenti"));
                     String nitEntidad = request.getParameter("txtnitenti");
+                    String nombreEntidad = request.getParameter("txtnombreenti");
+                    String tipoEntidad = request.getParameter("tipoEntidad");
 
-                    String mensaje = entidadDAO.buscarYCopiarRegistro(nitEntidad);
+                    en.setIdEntidad(idEntidad);
+                    en.setNitEntidad(nitEntidad);
+                    en.setNombreEntidad(nombreEntidad);
+                    en.setTipoEntidad(tipoEntidad);
+                    String mensaje = entidadDAO.buscarYCopiarRegistro(en);
+
                     if (mensaje == "Entidad agregada exitosamente.") {
-                        request.setAttribute("mensaje", "Entidad agregada exitosamente.");
+                        request.setAttribute("mensaje", "Se agrego la entidad " + tipoEntidad + " con éxito.");
                         request.setAttribute("mensajeTipo", "exito");
                     } else if (mensaje == "El registro ya existe en las entidades.") {
-                        request.setAttribute("mensaje", "El registro ya existe en las entidades.");
+                        request.setAttribute("mensaje", "Por favor verifique, la Entidad ya se encuentra registrada. ");
                         request.setAttribute("mensajeTipo", "error");
                     } else {
                         request.setAttribute("mensaje", "La entidad no existe.");
@@ -171,8 +184,22 @@ public class Controlador extends HttpServlet {
 
                     }
 
-                    //request.setAttribute("tiposEntidades", tiposEntidades);
-                    request.getRequestDispatcher("Controlador?menu=ManteCata&accion=Listar Entidades").forward(request, response);
+                    request.getRequestDispatcher("BusquedaMantenimientoCatalogos.jsp").forward(request, response);
+
+                    break;
+
+                case "buscarPro":
+                    String nitEntidad1 = request.getParameter("txtnitenti");
+                    Entidad enti = eDAO.buscarPorNitN(nitEntidad1);
+                    if (enti != null) {
+                        request.setAttribute("entidad", enti);
+                        request.setAttribute("habilitarGuardar", true);
+                    } else {
+                        request.setAttribute("mensaje", "Por favor Verifique, Entidad no Encontrada");
+                        request.setAttribute("mensajeTipo", "error");
+                        request.setAttribute("habilitarGuardar", false);
+                    }
+                   request.getRequestDispatcher("BusquedaMantenimientoCatalogos.jsp").forward(request, response);
 
                     break;
 
@@ -192,8 +219,8 @@ public class Controlador extends HttpServlet {
                     break;
 
                 case "eliminar":
-                    int idEntidad = Integer.parseInt(request.getParameter("idEntidad"));
-                    entidadDAO.eliminarEntidad(idEntidad);
+                    int idEntidad1 = Integer.parseInt(request.getParameter("idEntidad"));
+                    entidadDAO.eliminarEntidad(idEntidad1);
                     request.getRequestDispatcher("Controlador?menu=ManteCata&accion=Listar Entidades").forward(request, response);
                     break;
 
