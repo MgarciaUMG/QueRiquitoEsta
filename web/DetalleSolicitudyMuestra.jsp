@@ -113,8 +113,6 @@
                     </div>
             </div>
 
-
-            <input type="submit" name="accion" value="Actualizar" id="btnActualizar" class="btn btn-success">
             <button type="submit" name="accion" value="listar" id="btnRegresar" class="btn btn-info">Regresar</button>
         </form>
     </div>

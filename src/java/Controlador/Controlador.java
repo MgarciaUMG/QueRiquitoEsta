@@ -4,6 +4,8 @@ import Modelo.Entidad;
 import Modelo.EntidadDAO;
 import Modelo.Muestra;
 import Modelo.MuestraDAO;
+import Modelo.Solicitante;
+import Modelo.SolicitanteDAO;
 import Modelo.Usuario;
 import Modelo.UsuarioDAO;
 import java.io.IOException;
@@ -27,6 +29,8 @@ public class Controlador extends HttpServlet {
     MuestraDAO mdao = new MuestraDAO();
     Entidad en = new Entidad();
     EntidadDAO eDAO = new EntidadDAO();
+    Solicitante so = new Solicitante();
+    SolicitanteDAO sDAO = new SolicitanteDAO();
     int idfilam;
     int idfila;
 
@@ -40,6 +44,7 @@ public class Controlador extends HttpServlet {
 
         }
         if (menu.equals("BandejaLab")) {
+            List<Usuario> usuarios = new UsuarioDAO().obtenerUsuariosPorRol(3, "Activo");
 
             switch (accion) {
 
@@ -51,14 +56,40 @@ public class Controlador extends HttpServlet {
                     break;
 
                 case "Nuevo":
+                    request.setAttribute("usuarios", usuarios);
+                    String fechaActual = sDAO.obtenerFechaActual();
+                    request.setAttribute("fechaActual", fechaActual);
                     request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
 
                     break;
 
                 case "buscarPro":
+                    request.setAttribute("usuarios", usuarios);
                     String nitEntidad = request.getParameter("txtnitpro");
                     Entidad enti = eDAO.buscarPorNit(nitEntidad);
                     request.setAttribute("entidad", enti);
+                    if (enti != null) {
+                    } else {
+                        request.setAttribute("mensaje", "El proveedor no existe");
+                        request.setAttribute("mensajeTipo", "error");
+
+                    }
+                    request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
+
+                    break;
+
+                case "buscarSoli":
+                    request.setAttribute("usuarios", usuarios);
+                    String nitSolicitanteb = request.getParameter("txtnitsoli");
+                    Solicitante Soli = sDAO.buscarPorNit(nitSolicitanteb);
+                    request.setAttribute("solicitante", Soli);
+                    if (Soli != null) {
+                    } else {
+                        request.setAttribute("mensaje", "El Solicitante no existe");
+                        request.setAttribute("mensajeTipo", "error");
+
+                    }
+
                     request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
 
                     break;
@@ -105,42 +136,6 @@ public class Controlador extends HttpServlet {
                     request.setAttribute("muestra", mus);
                     request.getRequestDispatcher("DetalleSolicitudyMuestra.jsp").forward(request, response);
                     break;
-                case "Actualizar":
-                    int idSolicitud1 = Integer.parseInt(request.getParameter("txtidsoli"));
-                    String tipoSolicitud1 = request.getParameter("txttiposoli");
-                    String tipoEntidad1 = request.getParameter("txttipoenti");
-                    Date fechaSolicitud1 = Date.valueOf(request.getParameter("txtfechasoli"));
-                    String tipoDocumento1 = request.getParameter("txttipodocu");
-                    String numeroDocumento1 = request.getParameter("txtnodocu");
-                    String nitProveedor1 = request.getParameter("txtnitpro");
-                    String nombreProveedor1 = request.getParameter("txtnombrepro");
-                    String correoproveedor1 = request.getParameter("txtcorreopro");
-                    String correoSolicitante1 = request.getParameter("txtcorreosoli");
-                    String direccionProveedor1 = request.getParameter("txtdirepro");
-                    String telefonoProveedor1 = request.getParameter("txttelpro");
-                    String nitSolicitante1 = request.getParameter("txtnitsoli");
-                    String nombreSolicitante1 = request.getParameter("txtnombresoli");
-                    String noMuestra1 = request.getParameter("txtnomuestra");
-                    String descripcionProducto1 = request.getParameter("txtdesprodu");
-                    mu.setIdSolicitud(idSolicitud1);
-                    mu.setTipoSolicitud(tipoSolicitud1);
-                    mu.setTipoEntidad(tipoEntidad1);
-                    mu.setFechaSolicitud(fechaSolicitud1);
-                    mu.setTipoDocumento(tipoDocumento1);
-                    mu.setNumeroDocumento(numeroDocumento1);
-                    mu.setNitProveedor(nitProveedor1);
-                    mu.setNombreProveedor(nombreProveedor1);
-                    mu.setCorreoproveedor(correoproveedor1);
-                    mu.setCorreoSolicitante(correoSolicitante1);
-                    mu.setDireccionProveedor(direccionProveedor1);
-                    mu.setTelefonoProveedor(telefonoProveedor1);
-                    mu.setNitSolicitante(nitSolicitante1);
-                    mu.setNombreSolicitante(nombreSolicitante1);
-                    mu.setNoMuestra(noMuestra1);
-                    mu.setDescripcionProducto(descripcionProducto1);
-                    mdao.editm(mu);
-                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
-                    break;
                 case "eliminar":
                     idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
                     mdao.eliminarm(idfilam);
@@ -165,11 +160,17 @@ public class Controlador extends HttpServlet {
                     String nitEntidad = request.getParameter("txtnitenti");
                     String nombreEntidad = request.getParameter("txtnombreenti");
                     String tipoEntidad = request.getParameter("tipoEntidad");
+                    String correoEntidad = request.getParameter("txtcorreoenti");
+                    String direccionEntidad = request.getParameter("txtdireenti");
+                    String telefonoEntidad = request.getParameter("txttelenti");
 
                     en.setIdEntidad(idEntidad);
                     en.setNitEntidad(nitEntidad);
                     en.setNombreEntidad(nombreEntidad);
                     en.setTipoEntidad(tipoEntidad);
+                    en.setCorreoEntidad(correoEntidad);
+                    en.setDireccionEntidad(direccionEntidad);
+                    en.setTelefonoEntidad(telefonoEntidad);
                     String mensaje = entidadDAO.buscarYCopiarRegistro(en);
 
                     if (mensaje == "Entidad agregada exitosamente.") {
@@ -199,7 +200,7 @@ public class Controlador extends HttpServlet {
                         request.setAttribute("mensajeTipo", "error");
                         request.setAttribute("habilitarGuardar", false);
                     }
-                   request.getRequestDispatcher("BusquedaMantenimientoCatalogos.jsp").forward(request, response);
+                    request.getRequestDispatcher("BusquedaMantenimientoCatalogos.jsp").forward(request, response);
 
                     break;
 
@@ -245,6 +246,10 @@ public class Controlador extends HttpServlet {
         if (menu.equals("Usuarios")) {
             switch (accion) {
 
+                case "Nuevo":
+                    request.getRequestDispatcher("AgregarUsuarios.jsp").forward(request, response);
+                    break;
+
                 case "listar":
                     List lista = udao.listar();
                     request.setAttribute("usuarios", lista);
@@ -272,40 +277,61 @@ public class Controlador extends HttpServlet {
                     us.setRol(rol);
                     us.setPassword(password);
                     us.setEstado(estado);
-                    udao.Agregar(us);
-                    request.getRequestDispatcher("Controlador?menu=Usuarios&accion=listar").forward(request, response);
+                    String mensaje = udao.Agregar(us);
+
+                    if (mensaje == "Usuario agregado exitosamente.") {
+                        request.setAttribute("mensaje", "Usuario agregado exitosamente.");
+                        request.setAttribute("mensajeTipo", "exito");
+                    } else if (mensaje == "El Usuario ya existe en el sistema.") {
+                        request.setAttribute("mensaje", "El Usuario ya existe en el sistema.");
+                        request.setAttribute("mensajeTipo", "error");
+                    } else {
+                        request.setAttribute("mensaje", "La entidad no existe.");
+                        request.setAttribute("mensajeTipo", "error");
+
+                    }
+                    request.getRequestDispatcher("AgregarUsuarios.jsp").forward(request, response);
                     break;
                 case "edit":
                     idfila = Integer.parseInt(request.getParameter("nit_persona"));
                     Usuario u = udao.listarId(idfila);
                     request.setAttribute("usuario", u);
                     request.setAttribute("editMode", true);
-                    request.getRequestDispatcher("Controlador?menu=Usuarios&accion=listar").forward(request, response);
+                    request.getRequestDispatcher("EditarUsuarios.jsp").forward(request, response);
+
                     break;
                 case "Actualizar":
-                    String login1 = request.getParameter("txtlogin");
+
                     String nit_persona1 = request.getParameter("txtnit");
-                    String primer_nombre1 = request.getParameter("txtpnombre");
-                    String segundo_nombre1 = request.getParameter("txtsnombre");
-                    String primer_apellido1 = request.getParameter("txtpapellido");
-                    String segundo_apellido1 = request.getParameter("txtsapellido");
-                    String puesto1 = request.getParameter("txtpuesto");
                     String rol1 = request.getParameter("txtrol");
-                    String password1 = request.getParameter("txtpassword");
                     String estado1 = request.getParameter("txtestado");
-                    us.setLogin(login1);
-                    us.setNit_persona(String.valueOf(idfila));
-                    us.setPrimer_nombre(primer_nombre1);
-                    us.setSegundo_nombre(segundo_nombre1);
-                    us.setPrimer_apellido(primer_apellido1);
-                    us.setSegundo_apellido(segundo_apellido1);
-                    us.setPuesto(puesto1);
+                    us.setNit_persona(nit_persona1);
                     us.setRol(rol1);
-                    us.setPassword(password1);
                     us.setEstado(estado1);
-                    udao.edit(us);
-                    request.getRequestDispatcher("Controlador?menu=Usuarios&accion=listar").forward(request, response);
+                    boolean edit = udao.edit(us);
+                    if (edit == true) {
+                        request.setAttribute("mensaje", "Usuario actualizado exitosamente.");
+                        request.setAttribute("mensajeTipo", "exito");
+                    } else {
+                        request.setAttribute("mensaje", "El Usuario no se actualizo.");
+                        request.setAttribute("mensajeTipo", "error");
+                    }
+                    request.getRequestDispatcher("EditarUsuarios.jsp").forward(request, response);
                     break;
+                case "buscarPro":
+                    String nitPersona = request.getParameter("txtnit");
+                    Usuario usuario = udao.buscarPorNitN(nitPersona);
+                    if (usuario != null) {
+                        request.setAttribute("usuario", usuario);
+                    } else {
+                        request.setAttribute("mensaje", "El Usuario no existe");
+                        request.setAttribute("mensajeTipo", "error");
+
+                    }
+                    request.getRequestDispatcher("AgregarUsuarios.jsp").forward(request, response);
+
+                    break;
+
                 case "eliminar":
                     idfila = Integer.parseInt(request.getParameter("nit_persona"));
                     udao.eliminar(idfila);

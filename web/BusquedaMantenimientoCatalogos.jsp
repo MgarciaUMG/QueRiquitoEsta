@@ -63,6 +63,9 @@
                                 <div class="form-group">
                                     <label>Nit Entidad</label>
                                     <input type="hidden" name="txtidenti" value="${entidad.getIdEntidad()}" class="form-control">
+                                    <input type="hidden" name="txtcorreoenti" value="${entidad.getCorreoEntidad()}" class="form-control">
+                                    <input type="hidden" name="txtdireenti" value="${entidad.getDireccionEntidad()}" class="form-control">
+                                    <input type="hidden" name="txttelenti" value="${entidad.getTelefonoEntidad()}" class="form-control">
                                     <input type="text" name="txtnitenti" value="${entidad.getNitEntidad()}" placeholder="Ingrese Nit Entidad" class="form-control" required="">
                                 </div>
                                 <div class="form-group">

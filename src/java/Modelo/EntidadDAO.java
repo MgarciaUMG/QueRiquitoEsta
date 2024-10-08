@@ -16,7 +16,7 @@ public class EntidadDAO {
 
     public String buscarYCopiarRegistro(Entidad en) {
         String sqlBuscars = "SELECT * FROM entidad_sistema WHERE nit_Entidads = ?";
-        String sqlCopiars = "INSERT INTO entidad_sistema (id_Entidads, nombre_Entidads, nit_Entidads, tipo_Entidads) VALUES (?, ?, ?, ?)";
+        String sqlCopiars = "INSERT INTO entidad_sistema (id_Entidads, nombre_Entidads, nit_Entidads, tipo_Entidads, correo_Entidads, direccion_Entidads, telefono_Entidads) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sqlBuscars);
@@ -31,6 +31,9 @@ public class EntidadDAO {
                 ps.setString(2, en.getNombreEntidad());
                 ps.setString(3, en.getNitEntidad());
                 ps.setString(4, en.getTipoEntidad());
+                ps.setString(5, en.getCorreoEntidad());
+                ps.setString(6, en.getDireccionEntidad());
+                ps.setString(7, en.getTelefonoEntidad());
                 ps.executeUpdate();
                 return "Entidad agregada exitosamente.";
              
@@ -115,6 +118,9 @@ public class EntidadDAO {
                 entidad.setNombreEntidad(rs.getString("nombre_Entidads"));
                 entidad.setNitEntidad(rs.getString("nit_Entidads"));
                 entidad.setTipoEntidad(rs.getString("tipo_Entidads"));
+                entidad.setCorreoEntidad(rs.getString("correo_Entidads"));
+                entidad.setDireccionEntidad(rs.getString("direccion_Entidads"));
+                entidad.setTelefonoEntidad(rs.getString("telefono_Entidads"));
             } else {
 
                 return entidad;
@@ -124,6 +130,8 @@ public class EntidadDAO {
         }
         return entidad;
     }
+    
+    
 
     public Entidad buscarPorNitN(String nitEntidad) {
         String sql = "SELECT * FROM entidad_global WHERE nit_Entidadg = ?";
@@ -141,6 +149,9 @@ public class EntidadDAO {
                 entidad.setNombreEntidad(rs.getString("nombre_Entidadg"));
                 entidad.setNitEntidad(rs.getString("nit_Entidadg"));
                 entidad.setTipoEntidad(rs.getString("tipo_Entidadg"));
+                entidad.setCorreoEntidad(rs.getString("correo_Entidadg"));
+                entidad.setDireccionEntidad(rs.getString("direccion_Entidadg"));
+                entidad.setTelefonoEntidad(rs.getString("telefono_Entidadg"));
             } else {
 
                 return entidad;
