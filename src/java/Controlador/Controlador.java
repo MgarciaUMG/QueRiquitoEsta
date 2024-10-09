@@ -20,6 +20,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import java.io.OutputStream;
 
 public class Controlador extends HttpServlet {
 
@@ -110,6 +115,8 @@ public class Controlador extends HttpServlet {
                     String nombreSolicitante = request.getParameter("txtnombresoli");
                     String noMuestra = request.getParameter("txtnomuestra");
                     String descripcionProducto = request.getParameter("txtdesprodu");
+                    String analistaAsisgnado = request.getParameter("usuarioSeleccionado");
+                    String estadoSolicitud = request.getParameter("txtestadosolicitud");
 
                     mu.setTipoSolicitud(tipoSolicitud);
                     mu.setTipoEntidad(tipoEntidad);
@@ -126,8 +133,14 @@ public class Controlador extends HttpServlet {
                     mu.setNombreSolicitante(nombreSolicitante);
                     mu.setNoMuestra(noMuestra);
                     mu.setDescripcionProducto(descripcionProducto);
+                    mu.setAnalistaAsignado(analistaAsisgnado);
+                    mu.setEstadoSolicitud(estadoSolicitud);
                     boolean agregado = mdao.Agregarm(mu);
                     request.setAttribute("agregado", agregado);
+                    if (agregado) {
+                        generarPDF(response, mu);
+                        request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    }
                     request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
                     break;
                 case "edit":
@@ -386,5 +399,34 @@ public class Controlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void generarPDF(HttpServletResponse response, Muestra mu) throws IOException {
+        // Establece el tipo de contenido a PDF
+        response.setContentType("application/pdf");
+
+        // Especifica que el contenido será descargable
+        response.setHeader("Content-Disposition", "attachment; filename=etiqueta_muestra.pdf");
+
+        // Generar el PDF
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdfDoc = new PdfDocument(writer);
+            Document document = new Document(pdfDoc);
+
+            // Agregar contenido al PDF
+            document.add(new Paragraph("Etiqueta de Muestra Generada"));
+            document.add(new Paragraph("Contenido estático para probar el PDF."));
+
+            // Cerrar el documento
+            document.close();
+            // Aquí no es necesario cerrar el OutputStream explícitamente, ya que se está manejando
+            // dentro del try-with-resources y se cerrará automáticamente.
+
+            System.out.println("PDF generado y enviado al cliente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

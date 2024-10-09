@@ -22,12 +22,14 @@ public class Muestra {
     String nombreSolicitante;
     String noMuestra;
     String descripcionProducto;
+    String analistaAsignado;
+    String estadoSolicitud;
     
     public Muestra (){
     
     }
 
-    public Muestra(int idSolicitud, String tipoSolicitud, String tipoEntidad, Date fechaSolicitud, String tipoDocumento, String numeroDocumento, String nitProveedor, String nombreProveedor, String correoproveedor, String correoSolicitante, String direccionProveedor, String telefonoProveedor, String nitSolicitante, String nombreSolicitante, String noMuestra, String descripcionProducto) {
+    public Muestra(int idSolicitud, String tipoSolicitud, String tipoEntidad, Date fechaSolicitud, String tipoDocumento, String numeroDocumento, String nitProveedor, String nombreProveedor, String correoproveedor, String correoSolicitante, String direccionProveedor, String telefonoProveedor, String nitSolicitante, String nombreSolicitante, String noMuestra, String descripcionProducto, String analistaAsignado, String estadoSolicitud) {
         this.idSolicitud = idSolicitud;
         this.tipoSolicitud = tipoSolicitud;
         this.tipoEntidad = tipoEntidad;
@@ -44,7 +46,11 @@ public class Muestra {
         this.nombreSolicitante = nombreSolicitante;
         this.noMuestra = noMuestra;
         this.descripcionProducto = descripcionProducto;
+        this.analistaAsignado = analistaAsignado;
+        this.estadoSolicitud = estadoSolicitud;
     }
+
+    
 
     public int getIdSolicitud() {
         return idSolicitud;
@@ -173,7 +179,21 @@ public class Muestra {
     public void setDescripcionProducto(String descripcionProducto) {
         this.descripcionProducto = descripcionProducto;
     }
-    
-    
 
+    public String getAnalistaAsignado() {
+        return analistaAsignado;
+    }
+
+    public void setAnalistaAsignado(String analistaAsignado) {
+        this.analistaAsignado = analistaAsignado;
+    }
+
+    public String getEstadoSolicitud() {
+        return estadoSolicitud;
+    }
+
+    public void setEstadoSolicitud(String estadoSolicitud) {
+        this.estadoSolicitud = estadoSolicitud;
+    }
+        
 }

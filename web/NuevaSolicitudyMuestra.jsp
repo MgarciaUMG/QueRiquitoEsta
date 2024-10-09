@@ -153,18 +153,28 @@
 
             <input type="button" name="accion" value="Continuar" class="btn btn-primary" id="btnContinuar" onclick="validarFormulario()">
 
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Seleccionar Analista para la Solicitud</label>
+                    <select id="usuarios" name="usuarioSeleccionado" class="form-control" onchange="asignarEstado()" disabled>
+                        <option value="" disabled ${empty param.usuarioSeleccionado ? 'selected' : ''}>Seleccione un usuario</option>
+                        <c:forEach var="usuario" items="${usuarios}">
+                            <option value="${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}">
+                                ${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Estado Solicitud</label>
+                    <input type="text" name="txtestadosolicitud" id="txtestadosoli" value="" class="form-control" readonly>
+                </div>
+                <div class="form-group">
 
-            <div class="form-group mt-3">
-                <label>Seleccionar Analista para la Solicitud</label>
-                <select id="usuarios" name="usuarioSeleccionado" class="form-control" disabled>
-                    <option value="" disabled ${empty param.usuarioSeleccionado ? 'selected' : ''}>Seleccione un usuario</option>
-                    <c:forEach var="usuario" items="${usuarios}">
-                        <option value="${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}">
-                            ${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}
-                        </option>
-                    </c:forEach>
-                </select>
+                    <input type="hidden" disabled>
+                </div>
             </div>
+
 
             <input type="submit" name="accion" value="Agregar" class="btn btn-primary" id="btnAgregar">
 
@@ -238,7 +248,14 @@
                 document.getElementById("usuarios").disabled = false;
             }
 
-
+            function asignarEstado() {
+                var usuarioSeleccionado = document.getElementById("usuarios").value;
+                if (usuarioSeleccionado) {
+                    document.getElementById("txtestadosoli").value = "Asignada Analista Laboratorio";
+                } else {
+                    document.getElementById("txtestadosoli").value = "";
+                }
+            }
 
         </script>
 

@@ -17,7 +17,7 @@ public class UsuarioDAO {
 
     public Usuario validar(String login, String password) {
         Usuario us = new Usuario();
-        String sql = "select * from usuarios where login=? and password=?";
+        String sql = "select * from usuarios_sistema where login=? and password=?";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
@@ -33,10 +33,23 @@ public class UsuarioDAO {
 
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return us;
-
     }
 
     public List listar() {
@@ -61,6 +74,21 @@ public class UsuarioDAO {
                 list.add(us);
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return list;
     }
@@ -92,6 +120,20 @@ public class UsuarioDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return "Error al procesar la solicitud.";
     }
@@ -107,6 +149,18 @@ public class UsuarioDAO {
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -117,7 +171,20 @@ public class UsuarioDAO {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
+            return true;
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -143,6 +210,21 @@ public class UsuarioDAO {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return us;
     }
@@ -174,9 +256,22 @@ public class UsuarioDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return "Error al procesar la solicitud.";
-
     }
 
     public Usuario buscarPorNitN(String nitPersona) {
@@ -205,8 +300,22 @@ public class UsuarioDAO {
 
                 return usuario;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return usuario;
     }

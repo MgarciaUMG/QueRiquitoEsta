@@ -4,6 +4,7 @@ import config.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,16 +40,32 @@ public class MuestraDAO {
                 mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
                 mu.setNoMuestra(rs.getString("no_Muestra"));
                 mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
+                mu.setAnalistaAsignado(rs.getString("analista_Asignado"));
+                mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
                 list.add(mu);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return list;
     }
 
     public boolean Agregarm(Muestra mu) {
-        String sql = "insert into registro_solicitudmuestra(tipo_Solicitud, tipo_Entidad, fecha_Solicitud, tipo_Documento, numero_Documento, nit_Proveedor, nombre_Proveedor, correo_proveedor, correo_Solicitante, direccion_Proveedor, telefono_Proveedor, nit_Solicitante, nombre_Solicitante, no_Muestra, descripcion_Producto)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into registro_solicitudmuestra(tipo_Solicitud, tipo_Entidad, fecha_Solicitud, tipo_Documento, numero_Documento, nit_Proveedor, nombre_Proveedor, correo_proveedor, correo_Solicitante, direccion_Proveedor, telefono_Proveedor, nit_Solicitante, nombre_Solicitante, no_Muestra, descripcion_Producto, analista_Asignado, estado_Solicitud)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
@@ -67,10 +84,26 @@ public class MuestraDAO {
             ps.setString(13, mu.getNombreSolicitante());
             ps.setString(14, mu.getNoMuestra());
             ps.setString(15, mu.getDescripcionProducto());
+            ps.setString(16, mu.getAnalistaAsignado());
+            ps.setString(17, mu.getEstadoSolicitud());
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -98,6 +131,21 @@ public class MuestraDAO {
             ps.setInt(16, mu.getIdSolicitud());
             ps.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -109,6 +157,21 @@ public class MuestraDAO {
             ps = con.prepareStatement(sql);
             ps.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -141,6 +204,20 @@ public class MuestraDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return mu;
     }

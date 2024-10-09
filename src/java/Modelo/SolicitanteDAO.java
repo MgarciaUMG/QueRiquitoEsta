@@ -35,6 +35,20 @@ public class SolicitanteDAO {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return solicitante;
     }
@@ -53,6 +67,20 @@ public class SolicitanteDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Manejo de errores
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return fechaActual; // Retorna la fecha actual
     }

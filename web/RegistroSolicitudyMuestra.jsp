@@ -35,6 +35,8 @@
                             <th class="text-center">Nombre del Proveedor</th>
                             <th class="text-center">Numero de Muestra</th>
                             <th class="text-center">Descripción</th>
+                            <th class="text-center">Analista</th>
+                            <th class="text-center">Estado</th>
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -48,6 +50,8 @@
                                 <td class="text-center">${mu.getNombreProveedor()}</td>
                                 <td class="text-center">${mu.getNoMuestra()}</td>
                                 <td class="text-center">${mu.getDescripcionProducto()}</td>
+                                <td class="text-center">${mu.getAnalistaAsignado()}</td>
+                                <td class="text-center">${mu.getEstadoSolicitud()}</td>
                                 <td class="text-center">
                                     <a class="btn btn-primary" href="Controlador?menu=BandejaLab&accion=edit&idSolicitud=${mu.getIdSolicitud()}">
                                         <i class="fas fa-eye"></i> Ver

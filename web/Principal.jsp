@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -47,7 +49,20 @@
                                     <img src="imagenes/user.png" alt="60" width="60"/>
                                 </a>
                                 <a class="dropdown-item" href="#">${usuario.getLogin()}</a>
-                                <a class="dropdown-item" href="#">${usuario.getRol()}</a>
+                                <a class="dropdown-item" href="#">
+                                    <c:choose>
+                                        <c:when test="${usuario.getRol() == '1'}">Administrador</c:when>
+                                        <c:when test="${usuario.getRol() == '2'}">Registro Muestras</c:when>
+                                        <c:when test="${usuario.getRol() == '3'}">Analista de Laboratorio</c:when>
+                                        <c:when test="${usuario.getRol() == '4'}">Almacenamiento de Muestra</c:when>
+                                        <c:when test="${usuario.getRol() == '5'}">Supervisor de Laboratorio</c:when>
+                                        <c:when test="${usuario.getRol() == '6'}">Jefe Unidad Laboratorio</c:when>
+                                        <c:when test="${usuario.getRol() == '7'}">Laboratorio Externo</c:when>
+                                        <c:when test="${usuario.getRol() == '8'}">Reportes</c:when>
+                                        <c:when test="${usuario.getRol() == '9'}">Visualización de Documentos</c:when>
+                                        <c:otherwise>Rol no asignado</c:otherwise>
+                                    </c:choose>
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <form accion="Validar" method="POST">
                                     <button name="accion" value="Salir" class="dropdown-item" href="#">Salir</button>
