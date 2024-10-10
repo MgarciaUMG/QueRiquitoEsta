@@ -114,6 +114,7 @@
             </div>
 
             <button type="submit" name="accion" value="listar" id="btnRegresar" class="btn btn-info">Regresar</button>
+            <input type="submit" name="accion" value="GenerarPDF" class="btn btn-primary" id="btnpfd">
         </form>
     </div>
 

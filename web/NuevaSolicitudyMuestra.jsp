@@ -60,7 +60,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>ID Solicitud</label>
-                            <input type="text" value="" name="txtidsoli" class="form-control" readonly>
+                            <input type="text" value="${siguienteCorrelativo != null ? siguienteCorrelativo : param.txtidsoli}" name="txtidsoli" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Nit Proveedor</label>
@@ -177,6 +177,7 @@
 
 
             <input type="submit" name="accion" value="Agregar" class="btn btn-primary" id="btnAgregar">
+            <input type="submit" name="accion" value="GenerarPDF" class="btn btn-primary" id="btnpfd">
 
 
 
@@ -257,6 +258,7 @@
                 }
             }
 
+           
         </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

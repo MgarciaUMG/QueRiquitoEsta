@@ -9,22 +9,12 @@ import Modelo.SolicitanteDAO;
 import Modelo.Usuario;
 import Modelo.UsuarioDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import java.io.OutputStream;
 
 public class Controlador extends HttpServlet {
 
@@ -64,6 +54,8 @@ public class Controlador extends HttpServlet {
                     request.setAttribute("usuarios", usuarios);
                     String fechaActual = sDAO.obtenerFechaActual();
                     request.setAttribute("fechaActual", fechaActual);
+                    int siguienteCorrelativo = mdao.obtenerCorrelativo();
+                    request.setAttribute("siguienteCorrelativo", siguienteCorrelativo);
                     request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
 
                     break;
@@ -100,6 +92,7 @@ public class Controlador extends HttpServlet {
                     break;
 
                 case "Agregar":
+                    int idSolicitud = Integer.parseInt(request.getParameter("txtidsoli"));
                     String tipoSolicitud = request.getParameter("txttiposoli");
                     String tipoEntidad = request.getParameter("txttipoenti");
                     Date fechaSolicitud = Date.valueOf(request.getParameter("txtfechasoli"));
@@ -118,6 +111,7 @@ public class Controlador extends HttpServlet {
                     String analistaAsisgnado = request.getParameter("usuarioSeleccionado");
                     String estadoSolicitud = request.getParameter("txtestadosolicitud");
 
+                    mu.setIdSolicitud(idSolicitud);
                     mu.setTipoSolicitud(tipoSolicitud);
                     mu.setTipoEntidad(tipoEntidad);
                     mu.setFechaSolicitud(fechaSolicitud);
@@ -138,10 +132,15 @@ public class Controlador extends HttpServlet {
                     boolean agregado = mdao.Agregarm(mu);
                     request.setAttribute("agregado", agregado);
                     if (agregado) {
-                        generarPDF(response, mu);
-                        request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                        request.setAttribute("mensaje", "Exito en la solicitud");
+                        request.setAttribute("mensajeTipo", "Exito");
+                        String recipient = "elgarciam4@gmail.com"; // El correo del proveedor
+                        String subject = "Notificación de Muestra Agregada";
+                        String body = "Se ha agregado una nueva muestra:\n"
+                                + "Descripción: " + "\n\nGracias por su atención.";
+                        mdao.enviarCorreo(recipient, subject, body);
                     }
-                    request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
                     break;
                 case "edit":
                     idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
@@ -153,6 +152,18 @@ public class Controlador extends HttpServlet {
                     idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
                     mdao.eliminarm(idfilam);
                     request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    break;
+                case "GenerarPDF":
+                    int idSolicitud1 = Integer.parseInt(request.getParameter("txtidsoli"));
+                    Muestra mu = mdao.listarIdm(idSolicitud1); // Asumiendo que tienes un método para obtener la solicitud
+
+                    if (mu != null) {
+                        mdao.generarPDF(response, mu);
+                    } else {
+                        request.setAttribute("mensaje", "No se pudo encontrar la solicitud.");
+                        request.setAttribute("mensajeTipo", "error");
+                        request.getRequestDispatcher("Controlador?menu=BandejaLab&accion=listar").forward(request, response);
+                    }
                     break;
 
                 default:
@@ -399,34 +410,5 @@ public class Controlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void generarPDF(HttpServletResponse response, Muestra mu) throws IOException {
-        // Establece el tipo de contenido a PDF
-        response.setContentType("application/pdf");
-
-        // Especifica que el contenido será descargable
-        response.setHeader("Content-Disposition", "attachment; filename=etiqueta_muestra.pdf");
-
-        // Generar el PDF
-        try (OutputStream out = response.getOutputStream()) {
-            PdfWriter writer = new PdfWriter(out);
-            PdfDocument pdfDoc = new PdfDocument(writer);
-            Document document = new Document(pdfDoc);
-
-            // Agregar contenido al PDF
-            document.add(new Paragraph("Etiqueta de Muestra Generada"));
-            document.add(new Paragraph("Contenido estático para probar el PDF."));
-
-            // Cerrar el documento
-            document.close();
-            // Aquí no es necesario cerrar el OutputStream explícitamente, ya que se está manejando
-            // dentro del try-with-resources y se cerrará automáticamente.
-
-            System.out.println("PDF generado y enviado al cliente.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 }
