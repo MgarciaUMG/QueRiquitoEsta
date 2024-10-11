@@ -11,6 +11,7 @@ package Modelo;
  */
 public class Usuario {
     
+    int idpersona;
     String login;
     String nit_persona;
     String primer_nombre;
@@ -21,11 +22,13 @@ public class Usuario {
     String rol;
     String password;
     String estado;
+    String correo;
     
     public Usuario() {
 }
 
-    public Usuario(String login, String nit_persona, String primer_nombre, String segundo_nombre, String primer_apellido, String segundo_apellido, String puesto, String rol, String password, String estado) {
+    public Usuario(int idpersona, String login, String nit_persona, String primer_nombre, String segundo_nombre, String primer_apellido, String segundo_apellido, String puesto, String rol, String password, String estado, String correo) {
+        this.idpersona = idpersona;
         this.login = login;
         this.nit_persona = nit_persona;
         this.primer_nombre = primer_nombre;
@@ -36,6 +39,15 @@ public class Usuario {
         this.rol = rol;
         this.password = password;
         this.estado = estado;
+        this.correo = correo;
+    }
+
+    public int getIdpersona() {
+        return idpersona;
+    }
+
+    public void setIdpersona(int idpersona) {
+        this.idpersona = idpersona;
     }
 
     public String getLogin() {
@@ -109,7 +121,7 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public String getEstado() {
         return estado;
     }
@@ -117,6 +129,18 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    
+
+    
 
     
     

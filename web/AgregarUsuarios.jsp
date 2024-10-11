@@ -112,6 +112,20 @@
                                 <option value="Inactivo" ${usuario.getEstado().equals("Inactivo") ? "selected" : ""}>Inactivo</option>
                             </select>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                
+                                <input type="hidden" value="${usuario.getIdpersona()}" name="txtidusuario" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                
+                                <input type="hidden" value="${usuario.getCorreo()}"name="txtcorreousuario" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                
+                                <input type="hidden" value="" name="txtnada" class="form-control" readonly>
+                            </div>
+                        </div>
                     </div>
 
                     <input type="submit" name="accion" value="Agregar" class="btn btn-primary">

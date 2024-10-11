@@ -108,9 +108,10 @@ public class Controlador extends HttpServlet {
                     String nombreSolicitante = request.getParameter("txtnombresoli");
                     String noMuestra = request.getParameter("txtnomuestra");
                     String descripcionProducto = request.getParameter("txtdesprodu");
-                    String analistaAsisgnado = request.getParameter("usuarioSeleccionado");
+                    String analistaAsisgnado = request.getParameter("txtidana");
                     String estadoSolicitud = request.getParameter("txtestadosolicitud");
-
+                    String correoAnalista = request.getParameter("txtcorreoana");
+                    
                     mu.setIdSolicitud(idSolicitud);
                     mu.setTipoSolicitud(tipoSolicitud);
                     mu.setTipoEntidad(tipoEntidad);
@@ -132,13 +133,13 @@ public class Controlador extends HttpServlet {
                     boolean agregado = mdao.Agregarm(mu);
                     request.setAttribute("agregado", agregado);
                     if (agregado) {
-                        request.setAttribute("mensaje", "Exito en la solicitud");
+                        int idSolicitud1 = Integer.parseInt(request.getParameter("txtidsoli"));
+                        Muestra mu = mdao.listarIdm(idSolicitud1);
+                        if (mu != null) {
+                            mdao.enviarCorreo(mu, correoAnalista);
+                        }
+                        request.setAttribute("mensaje", "El registro de la muestra se realizó con éxito Número de Muestra " + mu.getNoMuestra());
                         request.setAttribute("mensajeTipo", "Exito");
-                        String recipient = "elgarciam4@gmail.com"; // El correo del proveedor
-                        String subject = "Notificación de Muestra Agregada";
-                        String body = "Se ha agregado una nueva muestra:\n"
-                                + "Descripción: " + "\n\nGracias por su atención.";
-                        mdao.enviarCorreo(recipient, subject, body);
                     }
                     request.getRequestDispatcher("NuevaSolicitudyMuestra.jsp").forward(request, response);
                     break;
@@ -281,6 +282,7 @@ public class Controlador extends HttpServlet {
                     break;
 
                 case "Agregar":
+                    int id = Integer.parseInt(request.getParameter("txtidusuario"));
                     String login = request.getParameter("txtlogin");
                     String nit_persona = request.getParameter("txtnit");
                     String primer_nombre = request.getParameter("txtpnombre");
@@ -291,6 +293,8 @@ public class Controlador extends HttpServlet {
                     String rol = request.getParameter("txtrol");
                     String password = request.getParameter("txtpassword");
                     String estado = request.getParameter("txtestado");
+                    String correo = request.getParameter("txtcorreousuario");
+                    us.setIdpersona(id);
                     us.setLogin(login);
                     us.setNit_persona(nit_persona);
                     us.setPrimer_nombre(primer_nombre);
@@ -301,6 +305,7 @@ public class Controlador extends HttpServlet {
                     us.setRol(rol);
                     us.setPassword(password);
                     us.setEstado(estado);
+                    us.setCorreo(correo);
                     String mensaje = udao.Agregar(us);
 
                     if (mensaje == "Usuario agregado exitosamente.") {

@@ -95,7 +95,7 @@ public class UsuarioDAO {
 
     public String Agregar(Usuario us) {
         String sqlBuscars = "SELECT * FROM usuarios_sistema WHERE nit_persona = ?";
-        String sql = "insert into usuarios_sistema(nit_persona, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, puesto, rol, password, estado)values(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into usuarios_sistema(id_usuario, nit_persona, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, puesto, rol, password, estado, correo_Usuario)values(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sqlBuscars);
@@ -106,15 +106,17 @@ public class UsuarioDAO {
                 return "El Usuario ya existe en el sistema.";
             } else {
                 ps = con.prepareStatement(sql);
-                ps.setString(1, us.getNit_persona());
-                ps.setString(2, us.getPrimer_nombre());
-                ps.setString(3, us.getSegundo_nombre());
-                ps.setString(4, us.getPrimer_apellido());
-                ps.setString(5, us.getSegundo_apellido());
-                ps.setString(6, us.getPuesto());
-                ps.setString(7, us.getRol());
-                ps.setString(8, us.getPassword());
-                ps.setString(9, us.getEstado());
+                ps.setInt(1,us.getIdpersona());
+                ps.setString(2, us.getNit_persona());
+                ps.setString(3, us.getPrimer_nombre());
+                ps.setString(4, us.getSegundo_nombre());
+                ps.setString(5, us.getPrimer_apellido());
+                ps.setString(6, us.getSegundo_apellido());
+                ps.setString(7, us.getPuesto());
+                ps.setString(8, us.getRol());
+                ps.setString(9, us.getPassword());
+                ps.setString(10, us.getEstado());
+                ps.setString(11, us.getCorreo());
                 ps.executeUpdate();
                 return "Usuario agregado exitosamente.";
             }
@@ -286,6 +288,7 @@ public class UsuarioDAO {
 
             if (rs.next()) {
                 usuario = new Usuario();
+                usuario.setIdpersona(rs.getInt("id_usuario"));
                 usuario.setLogin(rs.getString("login"));
                 usuario.setNit_persona(rs.getString("nit_persona"));
                 usuario.setPrimer_nombre(rs.getString("primer_nombre"));
@@ -296,6 +299,7 @@ public class UsuarioDAO {
                 usuario.setRol(rs.getString("rol"));
                 usuario.setPassword(rs.getString("password"));
                 usuario.setEstado(rs.getString("estado"));
+                usuario.setCorreo(rs.getString("correo_Usuario"));
             } else {
 
                 return usuario;
@@ -321,7 +325,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> obtenerUsuariosPorRol(int rol, String estado) {
-        String sql1 = "SELECT primer_nombre, primer_apellido FROM usuarios_sistema WHERE rol = ? AND estado = ?";
+        String sql1 = "SELECT id_usuario, primer_nombre, primer_apellido, correo_Usuario FROM usuarios_sistema WHERE rol = ? AND estado = ?";
         List<Usuario> listaUsuarios = new ArrayList<>();
         try {
             con = cn.Conexion();
@@ -332,8 +336,10 @@ public class UsuarioDAO {
 
             while (rs.next()) {
                 Usuario usuario = new Usuario();
+                usuario.setIdpersona(rs.getInt("id_usuario"));
                 usuario.setPrimer_nombre(rs.getString("primer_nombre"));
                 usuario.setPrimer_apellido(rs.getString("primer_apellido"));
+                usuario.setCorreo(rs.getString("correo_Usuario"));
                 listaUsuarios.add(usuario);
             }
         } catch (SQLException e) {

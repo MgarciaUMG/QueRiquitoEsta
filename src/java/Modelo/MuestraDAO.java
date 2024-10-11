@@ -33,7 +33,9 @@ public class MuestraDAO {
 
     public List listarm() {
         ArrayList<Muestra> list = new ArrayList<>();
-        String sql = "select * from registro_solicitudmuestra";
+        String sql = "SELECT rsm.*, us.primer_nombre, us.primer_apellido "
+                + "FROM registro_solicitudmuestra rsm "
+                + "LEFT JOIN usuarios_sistema us ON rsm.analista_Asignado = us.id_usuario";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
@@ -56,7 +58,8 @@ public class MuestraDAO {
                 mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
                 mu.setNoMuestra(rs.getString("no_Muestra"));
                 mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
-                mu.setAnalistaAsignado(rs.getString("analista_Asignado"));
+                String analistaAsignado = rs.getString("primer_nombre") + " " + rs.getString("primer_apellido");
+                mu.setAnalistaAsignado(analistaAsignado);
                 mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
                 list.add(mu);
             }
@@ -195,12 +198,15 @@ public class MuestraDAO {
 
     public Muestra listarIdm(int IdSolicitud) {
         Muestra mu = new Muestra();
-        String sql = "select * from registro_solicitudmuestra where id_Solicitud=" + IdSolicitud;
+        String sql = "SELECT rsm.*, us.primer_nombre, us.primer_apellido "
+                + "FROM registro_solicitudmuestra rsm "
+                + "LEFT JOIN usuarios_sistema us ON rsm.analista_Asignado = us.id_usuario "
+                + "WHERE rsm.id_Solicitud = " + IdSolicitud;
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 mu.setIdSolicitud(rs.getInt("id_Solicitud"));
                 mu.setTipoSolicitud(rs.getString("tipo_Solicitud"));
                 mu.setTipoEntidad(rs.getString("tipo_Entidad"));
@@ -217,6 +223,9 @@ public class MuestraDAO {
                 mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
                 mu.setNoMuestra(rs.getString("no_Muestra"));
                 mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
+                String analistaAsignado = rs.getString("primer_nombre") + " " + rs.getString("primer_apellido");
+                mu.setAnalistaAsignado(analistaAsignado);
+                mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
 
             }
         } catch (Exception e) {
@@ -240,25 +249,21 @@ public class MuestraDAO {
     }
 
     public void generarPDF(HttpServletResponse response, Muestra mu) {
-        // Configurar la respuesta
+
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=\"documento.pdf\"");
 
-        // Crear un documento PDF
         try (OutputStream outputStream = response.getOutputStream()) {
-            // Crear un PdfWriter
+
             PdfWriter writer = new PdfWriter(outputStream);
-            // Crear un PdfDocument
+
             PdfDocument pdf = new PdfDocument(writer);
-            // Crear un documento para añadir contenido
+
             Document document = new Document(pdf);
 
-            // Crear una tabla con dos columnas
             Table table = new Table(UnitValue.createPercentArray(new float[]{1, 1}))
                     .useAllAvailableWidth();
 
-            // Celda izquierda con contenido
-            // Celda derecha con el título
             Cell cellIzquierda = new Cell();
             Paragraph titulo = new Paragraph("LABORATORIO DE INSPECCION\nDE CALIDAD ALIMENTOS ‘QUE RIQUIDO ESTÁ’")
                     .setTextAlignment(TextAlignment.CENTER)
@@ -270,26 +275,23 @@ public class MuestraDAO {
             Cell cellDerecha = new Cell();
             Paragraph contenido = new Paragraph()
                     .setTextAlignment(TextAlignment.CENTER)
-                    .add("Número de Muestra\n")
-                    .add("\n")// Primera línea
-                    .add("Porción de Muestra\n")
+                    .add("Número de Muestra: \n" + mu.getNoMuestra())
                     .add("\n")
-                    .add("Nombre del Proveedor\n")
+                    .add("Nombre del Proveedor: \n" + mu.getNombreProveedor())
                     .add("\n")
-                    .add("NIT del Proveedor\n")
+                    .add("NIT del Proveedor: \n" + mu.getNitProveedor())
                     .add("\n")
-                    .add("Número de Expediente\n")
+                    .add("Número de Expediente: \n" + mu.getNumeroDocumento())
                     .add("\n")
-                    .add("Nombre Analista");
+                    .add("Nombre Analista: " + mu.getAnalistaAsignado());
 
             cellDerecha.add(contenido);
             table.addCell(cellDerecha);
 
-            // Añadir la tabla al documento
             document.add(table);
             document.close();
         } catch (IOException e) {
-            e.printStackTrace(); // Manejo de errores en la consola
+            e.printStackTrace(); //
         }
     }
 
@@ -303,11 +305,11 @@ public class MuestraDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Obtiene el ID máximo y le suma 1
+
                 siguienteId = rs.getInt(1) + 1;
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Maneja la excepción como desees
+            e.printStackTrace();
         } finally {
             try {
                 if (rs != null) {
@@ -326,17 +328,37 @@ public class MuestraDAO {
         return siguienteId;
     }
 
-    public static void enviarCorreo(String destinatario, String asunto, String mensaje) {
-        // Configuración de las propiedades de la conexión
+    public static void enviarCorreo(Muestra mu, String Canalista) {
+        String destinatariosoli = mu.getCorreoSolicitante();
+        String asuntosoli = "Muestra Generada";
+        String asuntoana = "Muestra para Análisis";
+        String mensajeana = "<div style='border: 1px solid black; padding: 10px;'>"
+                + "<p style='text-align: right;'>Fecha: " + mu.getFechaSolicitud() + "</p>"
+                + "<p>Se le informa que la solicitud de Muestras o porción de muestra para la gestión de <b>\"" + mu.getTipoSolicitud() + "\"</b>,"
+                + " Número de Muestra <b>\"" + mu.getNoMuestra() + "\"</b> le fue asignada con éxito, Expediente del: <b>\"" + mu.getTipoDocumento() + "\"</b>,"
+                + " Número: <b>\"" + mu.getNumeroDocumento() + "\"</b>, se envía este aviso para seguimiento desde su bandeja.</p>"
+                + "<br><br>"
+                + "<p><i>** Esta es una correspondencia autogenerada por el Sistema Muestras. Por favor <b>NO RESPONDA</b> a este correo.</i></p>"
+                + "</div>";
+
+        String mensajesoli = "<div style='border: 1px solid black; padding: 10px;'>"
+                + "<p style='text-align: right;'>Fecha: " + mu.getFechaSolicitud() + "</p>"
+                + "<p>Se le informa que la solicitud de Muestras para la gestión de <b>\"" + mu.getTipoSolicitud() + "\"</b>,"
+                + " Número de Muestra <b>\"" + mu.getNoMuestra() + "\"</b> fue registrada, Expediente del: <b>\"" + mu.getTipoDocumento() + "\"</b>,"
+                + " Número: <b>\"" + mu.getNumeroDocumento() + "\"</b>, se envía este aviso para seguimiento.</p>"
+                + "<br><br>"
+                + "<p><i>** Esta es una correspondencia autogenerada por el Sistema Muestras. Por favor <b>NO RESPONDA</b> a este correo.</i></p>"
+                + "</div>";
+
         Properties propiedades = new Properties();
         propiedades.put("mail.smtp.auth", "true");
         propiedades.put("mail.smtp.starttls.enable", "true");
-        propiedades.put("mail.smtp.host", "smtp.gmail.com"); // Cambia por el servidor SMTP
-        propiedades.put("mail.smtp.port", "587"); // Cambia por el puerto que uses
+        propiedades.put("mail.smtp.host", "smtp.gmail.com");
+        propiedades.put("mail.smtp.port", "587");
 
         // Autenticación
-        String usuario = "noreplyqueriquitoesta@gmail.com"; // Cambia por tu correo electrónico
-        String clave = "neutmgjuzdymkqol"; // Cambia por tu contraseña
+        String usuario = "noreplyqueriquitoesta@gmail.com";
+        String clave = "neutmgjuzdymkqol";
 
         Session session = Session.getInstance(propiedades, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -347,11 +369,17 @@ public class MuestraDAO {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(usuario));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
-            message.setSubject(asunto);
-            message.setText(mensaje);
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(Canalista));
+            message.setSubject(asuntoana);
+            message.setContent(mensajeana, "text/html");
+            Message message1 = new MimeMessage(session);
+            message1.setFrom(new InternetAddress(usuario));
+            message1.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatariosoli));
+            message1.setSubject(asuntosoli);
+            message1.setContent(mensajesoli, "text/html");
 
             Transport.send(message);
+            Transport.send(message1);
             System.out.println("Correo enviado con éxito.");
 
         } catch (MessagingException e) {

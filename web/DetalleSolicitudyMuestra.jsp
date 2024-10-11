@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <label>Tipo de Solicitud</label>
-                            <select class="form-control" name="txttiposoli" id="opcionessoli" onchange="habilitarnoMuestra()">
+                            <select class="form-control" name="txttiposoli" id="opcionessoli" onchange="habilitarnoMuestra()" readonly>
                                 <option value="ConNumerodeMuestra" ${muestra.getTipoSolicitud().equals("ConNumerodeMuestra") ? "selected" : ""}>Con Numero de Muestra</option>
                                 <option value="MuestraParaAnalisis" ${muestra.getTipoSolicitud().equals("MuestraParaAnalisis") ? "selected" : ""}>Muestra Para Análisis</option>
                                 <option value="SolicitudSinMuestra" ${muestra.getTipoSolicitud().equals("SolicitudSinMuestra") ? "selected" : ""}>Solicitud sin Muestra</option>
@@ -44,17 +44,17 @@
                         </div>
                         <div class="form-group">
                             <label>Tipo de Entidad</label>
-                            <input type="text" value="${muestra.getTipoEntidad()}" name="txttipoenti" class="form-control">
+                            <input type="text" value="${muestra.getTipoEntidad()}" name="txttipoenti" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Fecha de Solicitud</label>
-                            <input type="date" value="${muestra.getFechaSolicitud()}" name="txtfechasoli" class="form-control">
+                            <input type="date" value="${muestra.getFechaSolicitud()}" name="txtfechasoli" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tipo de Documento</label>
-                            <select class="form-control" name="txttipodocu" id="opcionesdocu">
+                            <select class="form-control" name="txttipodocu" id="opcionesdocu" readonly>
                                 <option value="NumerodeExpediente" ${muestra.getTipoDocumento().equals("NumerodeExpediente") ? "selected" : ""}>Número de Expediente</option>
                                 <option value="HojadeTramite" ${muestra.getTipoDocumento().equals("HojadeTramite") ? "selected" : ""}>Hoja de Trámite</option>
                                 <option value="Memorandum" ${muestra.getTipoDocumento().equals("Memorandum") ? "selected" : ""}>Memorándum</option>
@@ -62,54 +62,54 @@
                         </div>
                         <div class="form-group">
                             <label>Numero de Documento</label>
-                            <input type="text" value="${muestra.getNumeroDocumento()}"name="txtnodocu" class="form-control">
+                            <input type="text" value="${muestra.getNumeroDocumento()}"name="txtnodocu" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nit Proveedor</label>
-                            <input type="text" value="${muestra.getNitProveedor()}" name="txtnitpro" class="form-control">
+                            <input type="text" value="${muestra.getNitProveedor()}" name="txtnitpro" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Nombre Proveedor</label>
-                            <input type="text" value="${muestra.getNombreProveedor()}" name="txtnombrepro" class="form-control">
+                            <input type="text" value="${muestra.getNombreProveedor()}" name="txtnombrepro" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Correo Proveedor</label>
-                            <input type="text" value="${muestra.getCorreoproveedor()}" name="txtcorreopro" class="form-control">
+                            <input type="text" value="${muestra.getCorreoproveedor()}" name="txtcorreopro" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Correo del Solicitante</label>
-                            <input type="text" value="${muestra.getCorreoSolicitante()}" name="txtcorreosoli" class="form-control">
+                            <input type="text" value="${muestra.getCorreoSolicitante()}" name="txtcorreosoli" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Dirección Proveedor</label>
-                            <input type="text" value="${muestra.getDireccionProveedor()}" name="txtdirepro" class="form-control">
+                            <input type="text" value="${muestra.getDireccionProveedor()}" name="txtdirepro" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Telefono Proveedor</label>
-                            <input type="text" value="${muestra.getTelefonoProveedor()}" name="txttelpro" class="form-control">
+                            <input type="text" value="${muestra.getTelefonoProveedor()}" name="txttelpro" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nit Solicitante</label>
-                            <input type="text" value="${muestra.getNitSolicitante()}" name="txtnitsoli" class="form-control">
+                            <input type="text" value="${muestra.getNitSolicitante()}" name="txtnitsoli" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Nombre Solicitante</label>
-                            <input type="text" value="${muestra.getNombreSolicitante()}" name="txtnombresoli" class="form-control">
+                            <input type="text" value="${muestra.getNombreSolicitante()}" name="txtnombresoli" class="form-control" readonly>
                         </div>
                         <div class="form-group">
                             <label>Numero Muestra</label>
-                            <input type="text" value="${muestra.getNoMuestra()}" name="txtnomuestra" class="form-control"  id="nomuestra">
+                            <input type="text" value="${muestra.getNoMuestra()}" name="txtnomuestra" class="form-control"  id="nomuestra" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Descripción del Producto</label>
-                        <input type="text" value="${muestra.getDescripcionProducto()}" name="txtdesprodu" class="form-control">
+                        <input type="text" value="${muestra.getDescripcionProducto()}" name="txtdesprodu" class="form-control" readonly>
                     </div>
             </div>
 

@@ -156,10 +156,10 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Seleccionar Analista para la Solicitud</label>
-                    <select id="usuarios" name="usuarioSeleccionado" class="form-control" onchange="asignarEstado()" disabled>
+                    <select id="usuarios" name="usuarioSeleccionado" class="form-control" onchange="asignarEstadoYCorreo()" disabled>
                         <option value="" disabled ${empty param.usuarioSeleccionado ? 'selected' : ''}>Seleccione un usuario</option>
                         <c:forEach var="usuario" items="${usuarios}">
-                            <option value="${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}">
+                            <option value="${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}" data-correo="${usuario.getCorreo()}" data-id="${usuario.getIdpersona()}">
                                 ${usuario.getPrimer_nombre()} ${usuario.getPrimer_apellido()}
                             </option>
                         </c:forEach>
@@ -171,7 +171,8 @@
                 </div>
                 <div class="form-group">
 
-                    <input type="hidden" disabled>
+                    <input type="text" name="txtcorreoana" id="txtcorreoana" value="" class="form-control" readonly>
+                    <input type="text" name="txtidana" id="txtidana" value="" class="form-control" readonly>
                 </div>
             </div>
 
@@ -249,16 +250,29 @@
                 document.getElementById("usuarios").disabled = false;
             }
 
-            function asignarEstado() {
-                var usuarioSeleccionado = document.getElementById("usuarios").value;
+            function asignarEstadoYCorreo() {
+                // Obtener el select de usuarios
+                var select = document.getElementById("usuarios");
+                var usuarioSeleccionado = select.value;
+
+                // Obtener el correo del usuario seleccionado (data-correo)
+                var correo = select.options[select.selectedIndex].getAttribute("data-correo");
+
+                // Asignar el valor del correo al campo de texto
+                document.getElementById("txtcorreoana").value = correo ? correo : "";
+
+                // Asignar el estado basado en si se seleccionó un usuario
                 if (usuarioSeleccionado) {
                     document.getElementById("txtestadosoli").value = "Asignada Analista Laboratorio";
                 } else {
                     document.getElementById("txtestadosoli").value = "";
                 }
+
+                var id = select.options[select.selectedIndex].getAttribute("data-id");
+                document.getElementById("txtidana").value = id ? id : "";
             }
 
-           
+
         </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
