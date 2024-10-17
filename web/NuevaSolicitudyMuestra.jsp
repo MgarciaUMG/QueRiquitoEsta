@@ -171,8 +171,8 @@
                 </div>
                 <div class="form-group">
 
-                    <input type="text" name="txtcorreoana" id="txtcorreoana" value="" class="form-control" readonly>
-                    <input type="text" name="txtidana" id="txtidana" value="" class="form-control" readonly>
+                    <input type="hidden" name="txtcorreoana" id="txtcorreoana" value="" class="form-control" readonly>
+                    <input type="hidden" name="txtidana" id="txtidana" value="" class="form-control" readonly>
                 </div>
             </div>
 

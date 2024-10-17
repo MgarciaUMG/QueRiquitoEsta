@@ -111,7 +111,7 @@ public class Controlador extends HttpServlet {
                     String analistaAsisgnado = request.getParameter("txtidana");
                     String estadoSolicitud = request.getParameter("txtestadosolicitud");
                     String correoAnalista = request.getParameter("txtcorreoana");
-                    
+
                     mu.setIdSolicitud(idSolicitud);
                     mu.setTipoSolicitud(tipoSolicitud);
                     mu.setTipoEntidad(tipoEntidad);
@@ -269,6 +269,7 @@ public class Controlador extends HttpServlet {
         }
 
         if (menu.equals("Usuarios")) {
+            List<Usuario> usuarios = new UsuarioDAO().obtenerUsuariosPorRol(3, "Activo");
             switch (accion) {
 
                 case "Nuevo":
@@ -332,21 +333,83 @@ public class Controlador extends HttpServlet {
                 case "Actualizar":
 
                     String nit_persona1 = request.getParameter("txtnit");
-                    String rol1 = request.getParameter("txtrol");
+                    String nombre = request.getParameter("txtpnombre");
+                    String apellido = request.getParameter("txtpapellido");
                     String estado1 = request.getParameter("txtestado");
+                    String motivo = request.getParameter("txtmotivo");
+                    String reasisoli = request.getParameter("reasignarSolicitudes");
+                    String idAnalista = request.getParameter("txtidusuario");
+                    int trabajoc = Integer.parseInt(request.getParameter("txttrabajo"));
                     us.setNit_persona(nit_persona1);
-                    us.setRol(rol1);
                     us.setEstado(estado1);
-                    boolean edit = udao.edit(us);
-                    if (edit == true) {
-                        request.setAttribute("mensaje", "Usuario actualizado exitosamente.");
-                        request.setAttribute("mensajeTipo", "exito");
-                    } else {
-                        request.setAttribute("mensaje", "El Usuario no se actualizo.");
+                    us.setMotivo(motivo);
+                    if (reasisoli != null && reasisoli.equals("on") && estado1.equals("Inactivo") && trabajoc > 0) {
+                        List listam = mdao.listarmxanalista(idAnalista);
+                        request.setAttribute("muestras", listam);
+                        request.setAttribute("usuarios", usuarios);
+                        request.setAttribute("motivo", motivo);
+                        request.setAttribute("estado", estado1);
+                        Usuario us = udao.listarId(idfila);
+                        request.setAttribute("usuario", us);
+                        request.getRequestDispatcher("ReasignarSolicitudes.jsp").forward(request, response);
+                    } else if (reasisoli != null && reasisoli.equals("on") && estado1.equals("Inactivo") && trabajoc == 0) {
+                        boolean edit = udao.edit(us);
+                        if (edit == true) {
+                            request.setAttribute("mensaje", "Se realizo la actualización de estado con éxito, Nombre: " + nombre + " Estado nuevo: " + estado1);
+                            request.setAttribute("mensajeTipo", "exito");
+                        } else {
+                            request.setAttribute("mensaje", "El Usuario no se actualizo.");
+                            request.setAttribute("mensajeTipo", "error");
+                        }
+                    } else if (estado1.equals("Inactivo") && trabajoc > 0) {
+                        request.setAttribute("mensaje", "El Usuario tiene muestras asignadas.");
                         request.setAttribute("mensajeTipo", "error");
+
+                    } else if (estado1.equals("Activo") | estado1.equals("Inactivo")) {
+                        boolean edit = udao.edit(us);
+                        if (edit == true) {
+                            request.setAttribute("mensaje", "Se realizo la actualización de estado con éxito, Nombre: " + nombre + " Estado nuevo: " + estado1);
+                            request.setAttribute("mensajeTipo", "exito");
+                        } else {
+                            request.setAttribute("mensaje", "El Usuario no se actualizo.");
+                            request.setAttribute("mensajeTipo", "error");
+                        }
                     }
+                    request.setAttribute("motivo", motivo);
+                    request.setAttribute("estado", estado1);
                     request.getRequestDispatcher("EditarUsuarios.jsp").forward(request, response);
                     break;
+
+                case "actualizaranalista":
+
+                    int idSolicitud = Integer.parseInt(request.getParameter("idSolicitud"));
+                    int analistaAsignado = Integer.parseInt(request.getParameter("usuarioSeleccionado"));
+                    int analista = mdao.obtneranalista(idSolicitud);
+                    String correonA = request.getParameter("CorreonA");
+                    String motivo1 = request.getParameter("motivo");
+                    String estado2 = request.getParameter("estado");
+
+                    request.setAttribute("motivo", motivo1);
+                    request.setAttribute("estado", estado2);
+
+                    MuestraDAO muestraDAO = new MuestraDAO();
+                    boolean actuali = muestraDAO.actualizarAnalista(idSolicitud, analistaAsignado);
+                    if (actuali == true) {
+                        Muestra mu = mdao.listarIdm(idSolicitud);
+                        if (mu != null) {
+                            udao.enviarCorreo(mu, correonA);
+                        }
+                        Usuario us = udao.listarId(idfila);
+                        request.setAttribute("usuario", us);
+                        request.setAttribute("usuarios", usuarios);
+                        List listam = mdao.listarmxanalista(String.valueOf(analista));
+                        request.setAttribute("muestras", listam);
+                        request.getRequestDispatcher("ReasignarSolicitudes.jsp").forward(request, response);
+                    }
+                    request.getRequestDispatcher("EditarUsuarios.jsp").forward(request, response);
+
+                    break;
+
                 case "buscarPro":
                     String nitPersona = request.getParameter("txtnit");
                     Usuario usuario = udao.buscarPorNitN(nitPersona);

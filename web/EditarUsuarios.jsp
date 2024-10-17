@@ -22,6 +22,13 @@
                 flex: 0 0 32%; /* Cada div ocupará el 48% del ancho, con espacio entre ellos */
                 margin-bottom: 15px;
             }
+
+            .checkbox-lg {
+                width: 25px;
+                height: 40px;
+                transform: scale(1.2); /* Escalar el checkbox */
+                margin-right: 10px; /* Espacio entre el checkbox y el texto */
+            }
         </style>
         <script>
             function mostrarMensaje(mensaje, tipo) {
@@ -51,7 +58,7 @@
             <span id="mensajeTexto">${mensaje}</span>
         </div>
 
-        <h1 class="text-center">Agregar Usuario</h1>
+        <h1 class="text-center">Editar Usuario</h1>
         <div class="container mt-4" id="formulario-Usuarios">
             <div class="card-body">
                 <form action="Controlador?menu=Usuarios" method="POST">
@@ -86,7 +93,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Rol</label>
-                            <select class="form-control" name="txtrol" id="opciones">
+                            <select class="form-control" name="txtrol" id="opcionesrol" disabled>
                                 <option value="" disabled selected>Seleccione un Rol</option>
                                 <option value="2" ${usuario.getRol().equals("2") ? "selected" : ""}>Registro Muestras</option>
                                 <option value="3" ${usuario.getRol().equals("3") ? "selected" : ""}>Analista de Laboratorio</option>
@@ -104,16 +111,49 @@
                             <input type="password" value="${usuario.getPassword()}" name="txtpassword" class="form-control" readonly>
                         </div>
                         <div class="form-group">
-                            <label>Estado</label>
-                            <select class="form-control" name="txtestado" id="opciones">
-                                <option value="" disabled selected>Seleccione un Estado</option>
-                                <option value="Activo" ${usuario.getEstado().equals("Activo") ? "selected" : ""}>Activo</option>
-                                <option value="Inactivo" ${usuario.getEstado().equals("Inactivo") ? "selected" : ""}>Inactivo</option>
-                            </select>
+                            <label>Carga de Trabajo</label>
+                            <input type="text" value="${usuario.getTrabajo()}" name="txttrabajo" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+
+                            <input type="hidden" value="${usuario.getIdpersona()}" name="txtidusuario" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+
+                            <input type="hidden" value="${usuario.getCorreo()}"name="txtcorreousuario" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+
+                            <input type="hidden" value="" name="txtnada" class="form-control" readonly>
                         </div>
                     </div>
 
-                    
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-warning" onclick="habilitarCampos()">Cambiar Estado</button>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Motivo</label>
+                            <input type="text" id="motivo" name="txtmotivo" class="form-control" value="${param.motivo != null ? param.motivo : ''}" readOnly>
+                        </div>
+                        <div class="form-group">
+                            <label>¿Reasignar solicitudes?</label>
+                            <br>
+                            <input type="checkbox" id="reasignar" name="reasignarSolicitudes" class="checkbox-lg" checked>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <select class="form-control" name="txtestado" id="opcionesestado">
+                                <option value="" disabled selected>Seleccione un Estado</option>
+                                <option value="Activo" ${param.estado == "Activo" ? "selected" : ""}>Activo</option>
+                                <option value="Inactivo" ${param.estado == "Inactivo" ? "selected" : ""}>Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
                     <input type="submit" name="accion" value="Actualizar" class="btn btn-primary">
                     <button type="submit" name="accion" value="listar" class="btn btn-primary">Regresar</button>
                 </form>
@@ -122,9 +162,23 @@
 
         <c:if test="${not empty mensaje}">
             <script>
-                mostrarMensaje("${mensaje}", "${mensajeTipo}"); // Llama a la función para mostrar el mensaje
+                mostrarMensaje("${mensaje}", "${mensajeTipo}");
             </script>
         </c:if>
+
+        <script>
+            function habilitarCampos() {
+                // Obtener los elementos de motivo y el checkbox
+                var motivoInput = document.getElementById("motivo");
+                //var reasignarCheckbox = document.getElementById("reasignar");
+                //var estadoInput = document.getElementById("opcionesestado");
+
+                // Habilitar ambos campos
+                motivoInput.readOnly = false;
+                //reasignarCheckbox.disabled = false;
+                //estadoInput.readOnly = false;
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

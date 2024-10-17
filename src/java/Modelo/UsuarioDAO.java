@@ -7,6 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 public class UsuarioDAO {
 
@@ -106,7 +114,7 @@ public class UsuarioDAO {
                 return "El Usuario ya existe en el sistema.";
             } else {
                 ps = con.prepareStatement(sql);
-                ps.setInt(1,us.getIdpersona());
+                ps.setInt(1, us.getIdpersona());
                 ps.setString(2, us.getNit_persona());
                 ps.setString(3, us.getPrimer_nombre());
                 ps.setString(4, us.getSegundo_nombre());
@@ -141,12 +149,12 @@ public class UsuarioDAO {
     }
 
     public boolean edit(Usuario us) {
-        String sql = "update usuarios_sistema set rol=?, estado=? where nit_persona=?";
+        String sql = "update usuarios_sistema set estado=?, motivo=? where nit_persona=?";
         try {
             con = cn.Conexion();
             ps = con.prepareStatement(sql);
-            ps.setString(1, us.getRol());
-            ps.setString(2, us.getEstado());
+            ps.setString(1, us.getEstado());
+            ps.setString(2, us.getMotivo());
             ps.setString(3, us.getNit_persona());
             ps.executeUpdate();
             return true;
@@ -199,6 +207,7 @@ public class UsuarioDAO {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
+                us.setIdpersona(rs.getInt("id_usuario"));
                 us.setLogin(rs.getString("login"));
                 us.setNit_persona(rs.getString("nit_persona"));
                 us.setPrimer_nombre(rs.getString("primer_nombre"));
@@ -209,6 +218,8 @@ public class UsuarioDAO {
                 us.setRol(rs.getString("rol"));
                 us.setPassword(rs.getString("password"));
                 us.setEstado(rs.getString("estado"));
+                us.setCorreo(rs.getString("correo_Usuario"));
+                us.setTrabajo(rs.getInt("carga_de_Trabajo"));
 
             }
         } catch (Exception e) {
@@ -361,6 +372,47 @@ public class UsuarioDAO {
             }
         }
         return listaUsuarios;
+    }
+
+    public static void enviarCorreo(Muestra mu, String correonA) {
+        String asuntoana = "Muestra para Análisis";
+        String mensajeana = "<div style='border: 1px solid black; padding: 10px;'>"
+                + "<p style='text-align: right;'>Fecha: " + mu.getFechaSolicitud() + "</p>"
+                + "<p>Se le informa que la solicitud de Muestras o porción de muestra para la gestión de <b>\"" + mu.getTipoSolicitud() + "\"</b>,"
+                + " Número de Muestra <b>\"" + mu.getNoMuestra() + "\"</b> le fue asignada con éxito, Expediente del: <b>\"" + mu.getTipoDocumento() + "\"</b>,"
+                + " Número: <b>\"" + mu.getNumeroDocumento() + "\"</b>, se envía este aviso para seguimiento desde su bandeja.</p>"
+                + "<br><br>"
+                + "<p><i>** Esta es una correspondencia autogenerada por el Sistema Muestras. Por favor <b>NO RESPONDA</b> a este correo.</i></p>"
+                + "</div>";
+
+        Properties propiedades = new Properties();
+        propiedades.put("mail.smtp.auth", "true");
+        propiedades.put("mail.smtp.starttls.enable", "true");
+        propiedades.put("mail.smtp.host", "smtp.gmail.com");
+        propiedades.put("mail.smtp.port", "587");
+
+        // Autenticación
+        String usuario = "noreplyqueriquitoesta@gmail.com";
+        String clave = "neutmgjuzdymkqol";
+
+        Session session = Session.getInstance(propiedades, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(usuario, clave);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(usuario));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correonA));
+            message.setSubject(asuntoana);
+            message.setContent(mensajeana, "text/html");
+            Transport.send(message);
+            System.out.println("Correo enviado con éxito.");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
 }

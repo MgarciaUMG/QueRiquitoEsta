@@ -251,7 +251,8 @@ public class MuestraDAO {
     public void generarPDF(HttpServletResponse response, Muestra mu) {
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename=\"documento.pdf\"");
+        String nombreArchivo = "SolicitudMuestra_" + mu.getNoMuestra() + ".pdf";
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + nombreArchivo + "\"");
 
         try (OutputStream outputStream = response.getOutputStream()) {
 
@@ -385,6 +386,120 @@ public class MuestraDAO {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    public List listarmxanalista(String idAnalista) {
+        ArrayList<Muestra> list = new ArrayList<>();
+        String sql = "SELECT rsm.*, us.primer_nombre, us.primer_apellido FROM registro_solicitudmuestra rsm "
+                + "LEFT JOIN usuarios_sistema us ON rsm.analista_Asignado = us.id_usuario WHERE us.id_usuario = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(idAnalista));
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Muestra mu = new Muestra();
+                mu.setIdSolicitud(rs.getInt("id_Solicitud"));
+                mu.setTipoSolicitud(rs.getString("tipo_Solicitud"));
+                mu.setTipoEntidad(rs.getString("tipo_Entidad"));
+                mu.setFechaSolicitud(rs.getDate("fecha_Solicitud"));
+                mu.setTipoDocumento(rs.getString("tipo_Documento"));
+                mu.setNumeroDocumento(rs.getString("numero_Documento"));
+                mu.setNitProveedor(rs.getString("nit_Proveedor"));
+                mu.setNombreProveedor(rs.getString("nombre_Proveedor"));
+                mu.setCorreoproveedor(rs.getString("correo_proveedor"));
+                mu.setCorreoSolicitante(rs.getString("correo_Solicitante"));
+                mu.setDireccionProveedor(rs.getString("direccion_Proveedor"));
+                mu.setTelefonoProveedor(rs.getString("telefono_Proveedor"));
+                mu.setNitSolicitante(rs.getString("nit_Solicitante"));
+                mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
+                mu.setNoMuestra(rs.getString("no_Muestra"));
+                mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
+                String analistaAsignado = rs.getString("primer_nombre") + " " + rs.getString("primer_apellido");
+                mu.setAnalistaAsignado(analistaAsignado);
+                mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
+                list.add(mu);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public Integer obtneranalista(int idSolicitud) {
+        String sql = "SELECT analista_Asignado FROM registro_solicitudmuestra WHERE id_Solicitud = ?";
+        int analistaasi = 0;
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idSolicitud);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                analistaasi = rs.getInt("analista_Asignado");
+                return analistaasi;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return analistaasi;
+    }
+
+    public boolean actualizarAnalista(int idSolicitud, int analistaAsignado) {
+        String sql = "UPDATE registro_solicitudmuestra SET analista_Asignado = ? WHERE id_Solicitud = ?";
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, analistaAsignado);
+            ps.setInt(2, idSolicitud);
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
 }

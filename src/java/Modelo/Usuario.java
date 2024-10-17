@@ -23,11 +23,13 @@ public class Usuario {
     String password;
     String estado;
     String correo;
+    int trabajo;
+    String motivo;
     
     public Usuario() {
 }
 
-    public Usuario(int idpersona, String login, String nit_persona, String primer_nombre, String segundo_nombre, String primer_apellido, String segundo_apellido, String puesto, String rol, String password, String estado, String correo) {
+    public Usuario(int idpersona, String login, String nit_persona, String primer_nombre, String segundo_nombre, String primer_apellido, String segundo_apellido, String puesto, String rol, String password, String estado, String correo,int trabajo, String motivo) {
         this.idpersona = idpersona;
         this.login = login;
         this.nit_persona = nit_persona;
@@ -40,6 +42,8 @@ public class Usuario {
         this.password = password;
         this.estado = estado;
         this.correo = correo;
+        this.trabajo = trabajo;
+        this.motivo = motivo;
     }
 
     public int getIdpersona() {
@@ -138,15 +142,23 @@ public class Usuario {
         this.correo = correo;
     }
 
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public int getTrabajo() {
+        return trabajo;
+    }
+
+    public void setTrabajo(int trabajo) {
+        this.trabajo = trabajo;
+    }
     
 
-    
-
-    
-    
-    
-    
-    
     
 }
 
