@@ -20,7 +20,7 @@
                 <h1 class="text-center">Reasignar Solicitudes</h1>
                 <div class="container mt-4 text-center">
                     <div class="d-flex justify-content-start">
-                        <a class="btn btn-primary" href="Controlador?menu=BandejaLab&accion=Nuevo">Nueva Solicitud</a>
+                        
                     </div>
                 </div>
 

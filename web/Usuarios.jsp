@@ -16,6 +16,7 @@
             <h1 class="text-center">Usuarios</h1>
             <br><br>
             <a class="btn btn-primary" href="Controlador?menu=Usuarios&accion=Nuevo">Agregar Usuario</a>
+            <br><br>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -28,6 +29,7 @@
                         <th class="text-center">Puesto</th>
                         <th class="text-center">Rol</th>
                         <th class="text-center">Estado</th>
+                        <th class="text-center">Carga de Trabajo</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -56,6 +58,7 @@
                                 </c:choose>
                             </td>
                             <td class="text-center">${us.getEstado()}</td>
+                            <td class="text-center">${us.getTrabajo()}</td>
                             <td class="text-center">
                                 <a class="btn btn-info" href="Controlador?menu=Usuarios&accion=edit&nit_persona=${us.getNit_persona()}" >Editar</a>
                                 <a class="btn btn-danger" href="Controlador?menu=Usuarios&accion=eliminar&nit_persona=${us.getNit_persona()}">Remove</a>

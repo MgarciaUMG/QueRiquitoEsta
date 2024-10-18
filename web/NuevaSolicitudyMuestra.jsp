@@ -146,11 +146,6 @@
                     </div>
             </div>
 
-
-
-
-
-
             <input type="button" name="accion" value="Continuar" class="btn btn-primary" id="btnContinuar" onclick="validarFormulario()">
 
             <div class="form-row">

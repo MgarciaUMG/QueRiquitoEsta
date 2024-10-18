@@ -24,20 +24,22 @@
                                         Servicios
                                     </button>
                                     <div class="dropdown-menu text-center">
-                                        <a class="dropdown-item" href="#">Bandeja Analista</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Bandeja Almacenamiento</a>
+                                        <a class="dropdown-item" href="Controlador?menu=Visualizar&accion=Nuevo" target="myFrame">Visualización de solicitudes</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="Controlador?menu=BandejaLab&accion=listar" target="myFrame">Bandeja Laboratorio</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="Controlador?menu=ManteCata&accion=Listar Entidades" target="myFrame">Mantenimiento Catalogos</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="Controlador?menu=Reasignar&accion=Nuevo" target="myFrame">Reasignación de Solicitudes</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="Controlador?menu=Usuarios&accion=listar" target="myFrame">Mantenimiento Usuarios</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="nav-item">
+                       <!-- <li class="nav-item">
                             <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Usuarios&accion=listar" target="myFrame">Administración</a>
-                        </li>
+                        </li>-->
                     </ul>
                     <div class="ml-auto">
                         <div class="dropdown">

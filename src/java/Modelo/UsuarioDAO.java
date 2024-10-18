@@ -79,6 +79,7 @@ public class UsuarioDAO {
                 us.setRol(rs.getString("rol"));
                 us.setPassword(rs.getString("password"));
                 us.setEstado(rs.getString("estado"));
+                us.setTrabajo(rs.getInt("carga_de_Trabajo"));
                 list.add(us);
             }
         } catch (Exception e) {
@@ -336,7 +337,7 @@ public class UsuarioDAO {
     }
 
     public List<Usuario> obtenerUsuariosPorRol(int rol, String estado) {
-        String sql1 = "SELECT id_usuario, primer_nombre, primer_apellido, correo_Usuario FROM usuarios_sistema WHERE rol = ? AND estado = ?";
+        String sql1 = "SELECT id_usuario, primer_nombre, primer_apellido, rol, correo_Usuario FROM usuarios_sistema WHERE rol = ? AND estado = ?";
         List<Usuario> listaUsuarios = new ArrayList<>();
         try {
             con = cn.Conexion();
@@ -350,6 +351,7 @@ public class UsuarioDAO {
                 usuario.setIdpersona(rs.getInt("id_usuario"));
                 usuario.setPrimer_nombre(rs.getString("primer_nombre"));
                 usuario.setPrimer_apellido(rs.getString("primer_apellido"));
+                usuario.setRol(rs.getString("rol"));
                 usuario.setCorreo(rs.getString("correo_Usuario"));
                 listaUsuarios.add(usuario);
             }

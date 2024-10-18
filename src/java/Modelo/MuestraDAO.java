@@ -502,4 +502,117 @@ public class MuestraDAO {
         return false;
     }
 
+    public Muestra BuscarxMuestra(String noMuestra) {
+        Muestra mu = new Muestra();
+        String sql = "SELECT rsm.*, us.primer_nombre, us.primer_apellido "
+                + "FROM registro_solicitudmuestra rsm "
+                + "LEFT JOIN usuarios_sistema us ON rsm.analista_Asignado = us.id_usuario "
+                + "WHERE rsm.no_Muestra = ?";
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, noMuestra);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                mu.setIdSolicitud(rs.getInt("id_Solicitud"));
+                mu.setTipoSolicitud(rs.getString("tipo_Solicitud"));
+                mu.setTipoEntidad(rs.getString("tipo_Entidad"));
+                mu.setFechaSolicitud(rs.getDate("fecha_Solicitud"));
+                mu.setTipoDocumento(rs.getString("tipo_Documento"));
+                mu.setNumeroDocumento(rs.getString("numero_Documento"));
+                mu.setNitProveedor(rs.getString("nit_Proveedor"));
+                mu.setNombreProveedor(rs.getString("nombre_Proveedor"));
+                mu.setCorreoproveedor(rs.getString("correo_proveedor"));
+                mu.setCorreoSolicitante(rs.getString("correo_Solicitante"));
+                mu.setDireccionProveedor(rs.getString("direccion_Proveedor"));
+                mu.setTelefonoProveedor(rs.getString("telefono_Proveedor"));
+                mu.setNitSolicitante(rs.getString("nit_Solicitante"));
+                mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
+                mu.setNoMuestra(rs.getString("no_Muestra"));
+                mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
+                String analistaAsignado = rs.getString("primer_nombre") + " " + rs.getString("primer_apellido");
+                mu.setAnalistaAsignado(analistaAsignado);
+                mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
+
+            } else {
+
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return mu;
+    }
+
+    public List<Muestra> BuscarxNitProveedor(String nitProveedor) {
+        List<Muestra> listaMuestras = new ArrayList<>();
+        String sql = "SELECT rsm.*, us.primer_nombre, us.primer_apellido "
+                + "FROM registro_solicitudmuestra rsm "
+                + "LEFT JOIN usuarios_sistema us ON rsm.analista_Asignado = us.id_usuario "
+                + "WHERE rsm.nit_Proveedor = ?";
+
+        try {
+            con = cn.Conexion();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, nitProveedor);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Muestra mu = new Muestra();
+                mu.setIdSolicitud(rs.getInt("id_Solicitud"));
+                mu.setTipoSolicitud(rs.getString("tipo_Solicitud"));
+                mu.setTipoEntidad(rs.getString("tipo_Entidad"));
+                mu.setFechaSolicitud(rs.getDate("fecha_Solicitud"));
+                mu.setTipoDocumento(rs.getString("tipo_Documento"));
+                mu.setNumeroDocumento(rs.getString("numero_Documento"));
+                mu.setNitProveedor(rs.getString("nit_Proveedor"));
+                mu.setNombreProveedor(rs.getString("nombre_Proveedor"));
+                mu.setCorreoproveedor(rs.getString("correo_proveedor"));
+                mu.setCorreoSolicitante(rs.getString("correo_Solicitante"));
+                mu.setDireccionProveedor(rs.getString("direccion_Proveedor"));
+                mu.setTelefonoProveedor(rs.getString("telefono_Proveedor"));
+                mu.setNitSolicitante(rs.getString("nit_Solicitante"));
+                mu.setNombreSolicitante(rs.getString("nombre_Solicitante"));
+                mu.setNoMuestra(rs.getString("no_Muestra"));
+                mu.setDescripcionProducto(rs.getString("descripcion_Producto"));
+                String analistaAsignado = rs.getString("primer_nombre") + " " + rs.getString("primer_apellido");
+                mu.setAnalistaAsignado(analistaAsignado);
+                mu.setEstadoSolicitud(rs.getString("estado_Solicitud"));
+
+                listaMuestras.add(mu);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return listaMuestras;
+    }
+
 }

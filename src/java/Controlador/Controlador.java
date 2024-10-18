@@ -10,6 +10,7 @@ import Modelo.Usuario;
 import Modelo.UsuarioDAO;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -435,6 +436,111 @@ public class Controlador extends HttpServlet {
 
             }
             request.getRequestDispatcher("Usuarios.jsp").forward(request, response);
+
+        }
+
+        if (menu.equals("Reasignar")) {
+            List<Usuario> usuarios = new UsuarioDAO().obtenerUsuariosPorRol(3, "Activo");
+            switch (accion) {
+
+                case "Nuevo":
+                    request.getRequestDispatcher("BandejaReasignarSolicitudes.jsp").forward(request, response);
+                    break;
+
+                case "BuscarMuestra":
+                    String noMuestra = request.getParameter("txtnomuestra");
+                    Muestra mu1 = mdao.BuscarxMuestra(noMuestra);
+                    if (mu1 != null) {
+                        request.setAttribute("muestra", mu1);
+                        request.setAttribute("usuarios", usuarios);
+                    } else {
+                        request.setAttribute("mensaje", "Por favor verifique, Número de Muestra o porción de muestra no existe en base de datos.");
+                        request.setAttribute("mensajeTipo", "error");
+                    }
+
+                    request.getRequestDispatcher("BandejaReasignarSolicitudes.jsp").forward(request, response);
+                    break;
+
+                case "actualizaranalista":
+
+                    int idSolicitud = Integer.parseInt(request.getParameter("idSolicitud"));
+                    int analistaAsignado = Integer.parseInt(request.getParameter("usuarioSeleccionado"));
+                    int analista = mdao.obtneranalista(idSolicitud);
+                    String correonA = request.getParameter("CorreonA");
+                    String uanterior = request.getParameter("txtidanalista");
+                    String unuevo = request.getParameter("NuevoA");
+
+                    MuestraDAO muestraDAO = new MuestraDAO();
+                    boolean actuali = muestraDAO.actualizarAnalista(idSolicitud, analistaAsignado);
+                    if (actuali == true) {
+                        Muestra mu = mdao.listarIdm(idSolicitud);
+                        if (mu != null) {
+                            udao.enviarCorreo(mu, correonA);
+                        }
+                        Usuario us = udao.listarId(idfila);
+                        request.setAttribute("usuario", us);
+                        //request.setAttribute("usuarios", usuarios);
+                        List listam = mdao.listarmxanalista(String.valueOf(analista));
+                        request.setAttribute("muestras", listam);
+                        request.setAttribute("mensaje", "Se reasigno el usuario con éxito Usuario anterior: " + uanterior + " Usuario nuevo: " + unuevo);
+                        request.setAttribute("mensajeTipo", "exito");
+                        request.getRequestDispatcher("BandejaReasignarSolicitudes.jsp").forward(request, response);
+                    }
+                    request.getRequestDispatcher("BandejaReasignarSolicitudes.jsp").forward(request, response);
+                    break;
+
+                case "edit":
+                    idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
+                    Muestra mus = mdao.listarIdm(idfilam);
+                    request.setAttribute("muestra", mus);
+                    request.getRequestDispatcher("DetalleSolicitudyMuestraReasignar.jsp").forward(request, response);
+                    break;
+            }
+            request.getRequestDispatcher("BandejaReasignarSolicitudes.jsp").forward(request, response);
+
+        }
+
+        if (menu.equals("Visualizar")) {
+
+            switch (accion) {
+
+                case "Nuevo":
+                    request.getRequestDispatcher("BandejaVisualizacionSolicitudes.jsp").forward(request, response);
+                    break;
+
+                case "BuscarMuestra":
+                    String noMuestra = request.getParameter("txtnomuestra");
+                    String nitProveedor = request.getParameter("txtnitpro");
+
+                    List<Muestra> muestras = new ArrayList<>();
+
+                    if (noMuestra != null && !noMuestra.isEmpty()) {
+                        Muestra mu1 = mdao.BuscarxMuestra(noMuestra);
+                        if (mu1 != null) {
+                            muestras.add(mu1);
+                        }
+                    } else if (nitProveedor != null && !nitProveedor.isEmpty()) {
+                        muestras = mdao.BuscarxNitProveedor(nitProveedor);
+                    }
+
+                    if (!muestras.isEmpty()) {
+                        request.setAttribute("muestras", muestras);
+                    } else {
+                        request.setAttribute("mensaje", "No se encontraron muestras para los criterios de búsqueda ingresados.");
+                        request.setAttribute("mensajeTipo", "error");
+                    }
+
+                    request.getRequestDispatcher("BandejaVisualizacionSolicitudes.jsp").forward(request, response);
+                    break;
+
+                case "edit":
+                    idfilam = Integer.parseInt(request.getParameter("idSolicitud"));
+                    Muestra mus = mdao.listarIdm(idfilam);
+                    request.setAttribute("muestra", mus);
+                    request.getRequestDispatcher("DetalleSolicitudyMuestraVisualizar.jsp").forward(request, response);
+                    break;
+            }
+            request.getRequestDispatcher("BandejaVisualizacionSolicitudes.jsp").forward(request, response);
 
         }
 
